@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web;
+using System.Configuration;
+using Microsoft.Ajax.Utilities;
 
 namespace ServerMonitorFrontend.Gateways
 {

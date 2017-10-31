@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Entities.Entities;
+
+namespace ServerMonitorFrontend.Gateways.SecureGateways
+{
+    public class ServerGateway : IServiceGateway<Server>
+    {
+        public Server Create(Server t)
+        {
+            var Server = WebApiService.instance.PostAsync<Server>("/api/Servers/PostServer", t, HttpContext.Current.User.Identity.Name).Result;
+            return Server;
+        }
+
+        public Server Read(int id)
+        {
+            var Server = WebApiService.instance.GetAsync<Server>("/api/Servers/GetServer/" + id, HttpContext.Current.User.Identity.Name).Result;
+            return Server;
+        }
+
+        public List<Server> ReadAll()
+        {
+            var Servers = WebApiService.instance.GetAsync<List<Server>>("/api/ServerDetails/GetServers", HttpContext.Current.User.Identity.Name).Result;
+            return Servers;
+        }
+
+        public bool Delete(Server t)
+        {
+            var Server = WebApiService.instance.DeleteAsync<Server>("/api/ServerDetails/DeleteServer/" + t.Id, HttpContext.Current.User.Identity.Name).Result;
+            return Server;
+        }
+
+        public bool Update(Server t)
+        {
+            var Server = WebApiService.instance.PutAsync<ServerDetail>("/api/Servers/PutServer/" + t.Id, t, HttpContext.Current.User.Identity.Name).Result;
+            return Server;
+        }
+
+        public List<Server> ReadAllFromServer(int id)
+        {
+            var Server = WebApiService.instance.GetAsync<List<Server>>("/api/Servers/ReadAllFromServer/" + id, HttpContext.Current.User.Identity.Name).Result;
+            return Server;
+        }
+    }
+}
