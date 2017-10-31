@@ -5,9 +5,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataHandler.Encoder;
+using Microsoft.Owin.Security.DataHandler.Serializer;
 using ServerMonitorFrontend.Models;
 
 namespace ServerMonitorFrontend.Controllers
@@ -73,21 +76,47 @@ namespace ServerMonitorFrontend.Controllers
                 return View(model);
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            try
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                var result = await WebapiService.instance.AuthedicateAsync<SignInResult>(model.Email, model.Password);
+                FormsAuthentication.SetAuthCookie(result.AccessToken, model.RememberMe);
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.Name, result.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, result.UserName),
+                };
+                var authTicket = new AuthenticationTicket(new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie), new AuthenticationProperties
+                {
+                    ExpiresUtc = result.Expires,
+                    IsPersistent = model.RememberMe,
+                    IssuedUtc = result.Issued,
+                    RedirectUri = returnUrl
+                });
+                byte[] userData = DataSerializers.Ticket.Serialize(authTicket);
+                byte[] protectedData = MachineKey.Protect(userData, new[]
+                {
+                    "Microsoft.Owin.Security.Cookies.CookieAuthenticationMiddleware",
+                    DefaultAuthenticationTypes.ApplicationCookie, "v1"
+                });
+                string protectedText = TextEncodings.Base64Url.Encode(protectedData);
+                Response.SetCookie(new HttpCookie("EWCA.webapi.Auth")
+                {
+                    HttpOnly = true,
+                    Expires = result.Expires.UtcDateTime,
+                    Value = protectedText
+                });
+             
+                
+                return Redirect(returnUrl ?? "/");
+            }
+            catch (ApiException ex)
+            {
+                HandleBadRequest(ex);
+                if (!ModelState.IsValid)
+                {
                     return View(model);
+                }
+                throw;
             }
         }
 
@@ -151,6 +180,7 @@ namespace ServerMonitorFrontend.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
