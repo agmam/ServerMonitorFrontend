@@ -34,7 +34,7 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
 
         public bool Update(Server t)
         {
-            var Server = WebApiService.instance.PutAsync<ServerDetail>("/api/Servers/PutServer/" + t.Id, t, HttpContext.Current.User.Identity.Name).Result;
+            var Server = WebApiService.instance.PutAsync<Server>("/api/Servers/PutServer/" + t.Id, t, HttpContext.Current.User.Identity.Name).Result;
             return Server;
         }
 

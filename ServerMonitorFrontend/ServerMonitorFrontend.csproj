@@ -135,8 +135,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.1\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Drawing" />
@@ -236,9 +236,6 @@
     <Compile Include="Models\JsonBadRequest.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Gateways\AServiceGateway.cs" />
-    <Compile Include="Gateways\UnSecureGateways\EmailrecipientGatewayUnSecure.cs" />
-    <Compile Include="Gateways\UnSecureGateways\EventGatewayUnSecure.cs" />
-    <Compile Include="Gateways\UnSecureGateways\EventTypeGatewayUnSecure.cs" />
     <Compile Include="Gateways\IServiceGateway.cs" />
     <Compile Include="Gateways\LoginGateway.cs" />
     <Compile Include="Gateways\SecureGateways\EmailRecipientGateway.cs" />
@@ -247,9 +244,6 @@
     <Compile Include="Gateways\SecureGateways\ServerDetailAverageGateway.cs" />
     <Compile Include="Gateways\SecureGateways\ServerDetailGateway.cs" />
     <Compile Include="Gateways\SecureGateways\ServerGateway.cs" />
-    <Compile Include="Gateways\UnSecureGateways\ServerDetailAverageGatewatUnSecure.cs" />
-    <Compile Include="Gateways\UnSecureGateways\ServerDetailGatewayUnSecure.cs" />
-    <Compile Include="Gateways\UnSecureGateways\ServerGatewayUnSecure.cs" />
     <Compile Include="Gateways\WebApiService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -347,8 +341,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Enities\Entities.csproj">
-      <Project>{3bab7860-c5dc-4870-b223-590099c7fe35}</Project>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{f839f317-6a09-4a9d-8587-82bf7cd1b772}</Project>
       <Name>Entities</Name>
     </ProjectReference>
   </ItemGroup>
@@ -386,12 +380,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
-  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
