@@ -11,12 +11,15 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.DataHandler.Serializer;
+using ServerMonitorFrontend.Filters;
 using ServerMonitorFrontend.Models;
+using ServerMonitorFrontend.Gateways;
 
 namespace ServerMonitorFrontend.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    [HandleApiError]
+    public class AccountController : ApiController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -78,7 +81,8 @@ namespace ServerMonitorFrontend.Controllers
 
             try
             {
-                var result = await WebapiService.instance.AuthedicateAsync<SignInResult>(model.Email, model.Password);
+                
+                var result = await WebApiService.instance.AuthedicateAsync<SignInResult>(model.Email, model.Password);
                 FormsAuthentication.SetAuthCookie(result.AccessToken, model.RememberMe);
                 var claims = new[]
                 {
@@ -99,7 +103,7 @@ namespace ServerMonitorFrontend.Controllers
                     DefaultAuthenticationTypes.ApplicationCookie, "v1"
                 });
                 string protectedText = TextEncodings.Base64Url.Encode(protectedData);
-                Response.SetCookie(new HttpCookie("EWCA.webapi.Auth")
+                Response.SetCookie(new HttpCookie("ServerMonitor.webapi.Auth")
                 {
                     HttpOnly = true,
                     Expires = result.Expires.UtcDateTime,
