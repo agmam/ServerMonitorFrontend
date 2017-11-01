@@ -13,11 +13,11 @@ namespace ServerMonitorFrontend.Controllers
         {
             return View();
         }
-        [Authorize]
+        
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
+           var isauth = User.Identity.IsAuthenticated;
             return View();
         }
 
