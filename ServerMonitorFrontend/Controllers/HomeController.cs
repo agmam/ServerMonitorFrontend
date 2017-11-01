@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Entities.Entities;
+using ServerMonitorFrontend.Gateways;
 
 namespace ServerMonitorFrontend.Controllers
 {
+    
     public class HomeController : Controller
     {
-        
+        private readonly IServiceGateway<Server> s = new BLLFacade().GetServerGatewayUnSecure();
         public ActionResult Index()
         {
-            return View();
+            return View(s.ReadAll());
         }
         
         public ActionResult About()
@@ -23,8 +26,9 @@ namespace ServerMonitorFrontend.Controllers
 
         public ActionResult Contact()
         {
+           
             ViewBag.Message = "Your contact page.";
-
+           
             return View();
         }
     }

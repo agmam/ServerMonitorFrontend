@@ -16,19 +16,19 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
 
         public Server Read(int id)
         {
-            var Server = WebApiService.instance.GetAsync<Server>("/api/Servers/GetServer/" + id, HttpContext.Current.User.Identity.Name).Result;
+            var Server = WebApiService.instance.GetAsync<Server>("/api/Servers/" + id, HttpContext.Current.User.Identity.Name).Result;
             return Server;
         }
 
         public List<Server> ReadAll()
         {
-            var Servers = WebApiService.instance.GetAsync<List<Server>>("/api/ServerDetails/GetServers", HttpContext.Current.User.Identity.Name).Result;
+            var Servers = WebApiService.instance.GetAsync<List<Server>>("/api/Servers", HttpContext.Current.User.Identity.Name).Result;
             return Servers;
         }
 
         public bool Delete(Server t)
         {
-            var Server = WebApiService.instance.DeleteAsync<Server>("/api/ServerDetails/DeleteServer/" + t.Id, HttpContext.Current.User.Identity.Name).Result;
+            var Server = WebApiService.instance.DeleteAsync<Server>("/api/Servers/DeleteServer/" + t.Id, HttpContext.Current.User.Identity.Name).Result;
             return Server;
         }
 
