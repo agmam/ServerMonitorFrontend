@@ -10,27 +10,27 @@ namespace ServerMonitorFrontend
 {
     public class BLLFacade
     {
-        public IServiceGateway<EmailRecipient> GetEmailRecipientGatewayUnSecure()
+        public IServiceGateway<EmailRecipient> GetEmailRecipientGateway()
         {
             return new EmailRecipientGateway();
         }
-        public IServiceGateway<Event> GetEventGatewayUnSecure()
+        public IServiceGateway<Event> GetEventGateway()
         {
             return new EventGateway();
         }
-        public IServiceGateway<EventType> GetEventTypeGatewayUnSecure()
+        public IServiceGateway<EventType> GetEventTypeGateway()
         {
             return new EventTypeGateway();
         }
-        public IServiceGateway<Server> GetServerGatewayUnSecure()
+        public IServiceGateway<Server> GetServerGateway()
         {
             return new ServerGateway();
         }
-        public IServiceGateway<ServerDetail> GetServerDetailGatewayUnSecure()
+        public IServiceGateway<ServerDetail> GetServerDetailGateway()
         {
             return new ServerDetailGateway();
         }
-        public IServiceGateway<ServerDetailAverage> GetServerDetailAverageGatewayUnSecure()
+        public IServiceGateway<ServerDetailAverage> GetServerDetailAverageGateway()
         {
             return new ServerDetailAverageGateway();
         }

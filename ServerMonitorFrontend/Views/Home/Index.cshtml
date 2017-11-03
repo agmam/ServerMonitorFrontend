@@ -1,19 +1,10 @@
-﻿@model IEnumerable<Entities.Entities.Server>
+﻿
 @{
     ViewBag.Title = "Home Page";
 }
 
 <h1>Servers</h1>
 
-    <table>
-        
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ServerName)
-                </td>
-            </tr>
-           
-        }
-    </table>
+<div id="partial">
+    @Html.Partial("RenderPartialView")
+</div>

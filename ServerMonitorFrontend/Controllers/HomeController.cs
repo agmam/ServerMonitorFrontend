@@ -11,7 +11,8 @@ namespace ServerMonitorFrontend.Controllers
     
     public class HomeController : Controller
     {
-        private readonly IServiceGateway<Server> s = new BLLFacade().GetServerGatewayUnSecure();
+        private readonly IServiceGateway<Server> s = new BLLFacade().GetServerGateway();
+        private readonly IServiceGateway<ServerDetail> sd = new BLLFacade().GetServerDetailGateway();
         public ActionResult Index()
         {
             return View(s.ReadAll());
@@ -30,6 +31,11 @@ namespace ServerMonitorFrontend.Controllers
             ViewBag.Message = "Your contact page.";
            
             return View();
+        }
+
+        public ActionResult RenderPartialView()
+        {
+            return PartialView(s.ReadAll());
         }
     }
 }

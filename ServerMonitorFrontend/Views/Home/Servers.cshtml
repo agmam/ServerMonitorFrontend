@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Entities.Entities.Server>
+
+<div>
+    <hr />
+    <table>
+        @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(m => item.ServerName)
+                        
+                    </td>
+                    
+
+                </tr>
+        }
+    </table>
+</div>
+
