@@ -1,10 +1,40 @@
-﻿
+﻿@model ServerMonitorFrontend.Models.GraphModel
 @{
     ViewBag.Title = "Home Page";
 }
 
-<h1>Servers</h1>
+<h1>home</h1>
 
 <div id="partial">
-    @Html.Partial("RenderPartialView")
+    @foreach (var data in Model.GraphDatas)
+    {
+
+        <p>@data.X - @data.Y</p>
+
+        <br/>
+    }
 </div>
+<canvas id="myChart" width="400" height="400"></canvas>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["Red"],
+        datasets: [{
+            label: 'Cpu utilization',
+            data: @Model.GraphDatas,
+        borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>

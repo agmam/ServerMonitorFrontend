@@ -233,6 +233,11 @@
     <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\HandleApiErrorAttribute.cs" />
+    <Compile Include="Gateways\IServerDetailAverageGateway.cs" />
+    <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Models\GraphData.cs" />
+    <Compile Include="Logic\GraphLogic.cs" />
+    <Compile Include="Models\GraphModel.cs" />
     <Compile Include="Models\JsonBadRequest.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Gateways\AServiceGateway.cs" />

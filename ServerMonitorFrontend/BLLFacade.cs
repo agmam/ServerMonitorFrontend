@@ -30,7 +30,7 @@ namespace ServerMonitorFrontend
         {
             return new ServerDetailGateway();
         }
-        public IServiceGateway<ServerDetailAverage> GetServerDetailAverageGateway()
+        public IServerDetailAverageGateway GetServerDetailAverageGateway()
         {
             return new ServerDetailAverageGateway();
         }

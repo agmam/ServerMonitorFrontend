@@ -22,7 +22,7 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
 
         public List<ServerDetail> ReadAll()
         {
-            var ServerDetails = WebApiService.instance.GetAsync<List<ServerDetail>>("/api/ServerDetails/GetServerDetails", HttpContext.Current.User.Identity.Name).Result;
+            var ServerDetails = WebApiService.instance.GetAsync<List<ServerDetail>>("/api/ServerDetails", HttpContext.Current.User.Identity.Name).Result;
             return ServerDetails;
         }
 
