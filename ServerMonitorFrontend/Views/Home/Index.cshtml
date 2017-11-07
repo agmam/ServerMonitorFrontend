@@ -1,40 +1,167 @@
-﻿@model ServerMonitorFrontend.Models.GraphModel
+﻿@using ServerMonitorFrontend.Helpers
+@model ServerMonitorFrontend.Models.GraphModel
 @{
     ViewBag.Title = "Home Page";
 }
 
-<h1>home</h1>
+<h1>@Model.Server.Id - @Model.Server.ServerName - @Model.Server.Created</h1>
+@{
+    var s = @Model.Avarages.FindLast(x => x.Id != 0);
 
-<div id="partial">
-    @foreach (var data in Model.GraphDatas)
-    {
+    <p>Total RAM: @s.RAMTotal MB</p>
+    <p>Uptime: @s.UpTime s</p>
+    <p>Processes: @s.Processes</p>
+    <p>Handles: @s.Handles</p>
+}
 
-        <p>@data.X - @data.Y</p>
 
-        <br/>
-    }
-</div>
-<canvas id="myChart" width="400" height="400"></canvas>
+
+<canvas id="canvas-cpu-graph" width="400" height="400"></canvas>
+<canvas id="canvas-Temp-gauge" width="300" height="300"></canvas>
 <script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ["Red"],
-        datasets: [{
-            label: 'Cpu utilization',
-            data: @Model.GraphDatas,
-        borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
+    //colors
+    var color = Chart.helpers.color;
+    //font family
+    Chart.defaults.global.defaultFontFamily = "Tahoma";
+
+    //Get the canvas
+    var ctxCpu = document.getElementById("canvas-cpu-graph").getContext("2d");
+
+    //Configuration for CPU graph
+    var configCpu = {
+        type: 'line',
+        data: {
+            datasets: [{
+                lineTension:0,
+                label: "CPU Utilization in percentage",
+                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.red,
+                fill: false,
+                data: @Html.JsonInsert(Model.GraphDatas)
             }]
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: "CPU Utilization",
+                fontSize: 16
+            },
+            scales: {
+                xAxes: [{
+                    type: "time",
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Time',
+                        fontSize: 14
+
+                    },
+                    ticks: {
+                        autoSkip: false,
+                        maxRotation: 45,
+                        minRotation: 45,
+                        fontSize: 14
+                    },
+                    unit: 'hour',
+                    unitStepSize: 1,
+                    time: {
+                        displayFormats: {
+                            'hour': 'HH:mm'
+                        }
+                    }
+                }],
+                yAxes: [{
+                        position: "left",
+                        id: "y-axis-0",
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: '% utilization',
+                            fontSize: 14
+
+                        },
+                        ticks: {
+                            fontSize: 14
+                        }
+                    }]
+            },
+            legend:{
+                display: false
+            },
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                            var percentage = data.datasets[0].data[tooltipItem.index].y;
+                            return percentage + ' %';
+                    },
+                    title: function(tooltipItems, data) {
+                        var tooltipItem = tooltipItems[0];
+                        var time = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].x;
+
+                        return 'Time: ' + moment(time).format('HH:mm');;
+                    }
+                }
+            }
         }
     }
-});
+    window.CpuChart = new Chart(ctxCpu, configCpu);
+
+    // Gauge start
+
+    jQuery.fn.gauge = function(opts) {
+                     this.each(function() {
+                         var $this = $(this),
+                             data = $this.data();
+
+                         if (data.gauge) {
+                             data.gauge.stop();
+                             delete data.gauge;
+                         }
+                         if (opts !== false) {
+                             data.gauge = new Gauge(this).setOptions(opts);
+                         }
+                     });
+                     return this;
+                 };
+                 var opts = {
+                     angle: -0.2, // The span of the gauge arc
+                     lineWidth: 0.2, // The line thickness
+                     radiusScale: 0.8, // Relative radius
+                     pointer: {
+                         length: 0.57, // // Relative to gauge radius
+                         strokeWidth: 0.044, // The thickness
+                         color: '#333' // Fill color
+                     },
+                     limitMax: false,     // If false, max value increases automatically if value > maxValue
+                     limitMin: true,     // If true, the min value of the gauge will be fixed
+                     colorStart: '#6F6EA0',   // Colors
+                     colorStop: '#C0C0DB',    // just experiment with them
+                     strokeColor: '#333',  // to see which ones work best for you
+                     generateGradient: true,
+                     highDpiSupport: true,     // High resolution support
+                     staticZones: [
+        {strokeStyle: "#F03E3E", min: 90, max: 100}, // Red from 90 to 100
+        {strokeStyle: "#FFDD00", min: 69, max: 90}, // Yellow
+        {strokeStyle: "#30B32D", min: 0, max: 69}, // Green
+                     ],staticLabels: {
+                         font: "15px sans-serif",  // Specifies font
+                         labels: [10, 20, 30, 40, 50, 70],  // Print labels at these values
+                         color: "#000000",  // Optional: Label text color
+                         fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+                     },
+                 };
+                 var target = document.getElementById('canvas-Temp-gauge'); // your canvas element
+                 var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+                 gauge.maxValue = 100; // set max gauge value
+                 gauge.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+                 gauge.animationSpeed = 44; // set animation speed (32 is default value)
+                 gauge.set(@Html.JsonInsert(Model.Avarages.FindLast(x => x.Id != 0).Temperature)); // set actual value
+
+    function h() {
+        gauge.set(@Html.JsonInsert(Model.Avarages.FindLast(x => x.Id != 0).Temperature));
+    }
+
+    h();
+    
 </script>

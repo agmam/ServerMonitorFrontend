@@ -13,18 +13,24 @@ namespace ServerMonitorFrontend.Controllers
     
     public class HomeController : Controller
     {
-        private readonly IServiceGateway<Server> s = new BLLFacade().GetServerGateway();
         private readonly IServiceGateway<ServerDetail> sd = new BLLFacade().GetServerDetailGateway();
 
         private readonly IServerDetailAverageGateway serverDetailAverageGateway =
             new BLLFacade().GetServerDetailAverageGateway();
+
+        private readonly IServerGateway serverGateway =
+            new BLLFacade().GetServerGateway();
+
         public ActionResult Index()
         {
-            var list = serverDetailAverageGateway.GetAllServerDetailAveragesForPeriod(24, 22);
-            var graphdatas = new GraphLogic().GetCpuGraphDatas(list);
+            Server server = serverGateway.GetDefaultServer();
+            var list = serverDetailAverageGateway.GetAllServerDetailAveragesForPeriod(24, server.Id);
+            var graphdatas = new GraphLogic().GetCpuGraphDatas(list, server.Id);
             var model = new GraphModel()
             {
-                GraphDatas = graphdatas
+                GraphDatas = graphdatas,
+                Avarages = list,
+                Server = server
             };
             return View(model);
         }
@@ -46,7 +52,7 @@ namespace ServerMonitorFrontend.Controllers
 
         public ActionResult RenderPartialView()
         {
-            return PartialView(s.ReadAll());
+            return PartialView(serverGateway.ReadAll());
         }
     }
 }

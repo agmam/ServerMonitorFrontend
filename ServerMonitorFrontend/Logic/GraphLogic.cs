@@ -10,7 +10,7 @@ namespace ServerMonitorFrontend.Logic
     public class GraphLogic
     {
         private readonly IServiceGateway<ServerDetail> serverDetailGateway = new BLLFacade().GetServerDetailGateway();
-        public List<GraphData> GetCpuGraphDatas(List<ServerDetailAverage> serverDetailAverages)
+        public List<GraphData> GetCpuGraphDatas(List<ServerDetailAverage> serverDetailAverages, int serverId)
         {
             List<GraphData> graphDatas = new List<GraphData>();
 
@@ -23,7 +23,7 @@ namespace ServerMonitorFrontend.Logic
                 };
                 graphDatas.Add(gd);
             }
-            var detials = serverDetailGateway.ReadAll();
+            var detials = serverDetailGateway.ReadAllFromServer(serverId);
             var ave = detials.Average(x=> x.CPUUtilization);// udregner gennemsnittet af de nyeste serverdetails for det seneste graf punkt
             var graphData = new GraphData()
             {

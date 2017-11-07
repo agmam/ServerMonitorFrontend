@@ -22,7 +22,7 @@ namespace ServerMonitorFrontend
         {
             return new EventTypeGateway();
         }
-        public IServiceGateway<Server> GetServerGateway()
+        public IServerGateway GetServerGateway()
         {
             return new ServerGateway();
         }
@@ -34,5 +34,7 @@ namespace ServerMonitorFrontend
         {
             return new ServerDetailAverageGateway();
         }
+       
+        
     }
 }

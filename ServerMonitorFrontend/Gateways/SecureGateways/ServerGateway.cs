@@ -6,7 +6,7 @@ using Entities.Entities;
 
 namespace ServerMonitorFrontend.Gateways.SecureGateways
 {
-    public class ServerGateway : IServiceGateway<Server>
+    public class ServerGateway : IServiceGateway<Server>, IServerGateway
     {
         public Server Create(Server t)
         {
@@ -16,13 +16,13 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
 
         public Server Read(int id)
         {
-            var Server = WebApiService.instance.GetAsync<Server>("/api/Servers/" + id, HttpContext.Current.User.Identity.Name).Result;
+            var Server = WebApiService.instance.GetAsync<Server>("/api/Servers/GetServer/" + id, HttpContext.Current.User.Identity.Name).Result;
             return Server;
         }
 
         public List<Server> ReadAll()
         {
-            var Servers = WebApiService.instance.GetAsync<List<Server>>("/api/Servers", HttpContext.Current.User.Identity.Name).Result;
+            var Servers = WebApiService.instance.GetAsync<List<Server>>("/api/Servers/GetServers", HttpContext.Current.User.Identity.Name).Result;
             return Servers;
         }
 
@@ -42,6 +42,12 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
         {
             var Server = WebApiService.instance.GetAsync<List<Server>>("/api/Servers/ReadAllFromServer/" + id, HttpContext.Current.User.Identity.Name).Result;
             return Server;
+        }
+
+        public Server GetDefaultServer()
+        {
+            //var Server = WebApiService.instance.GetAsync<Server>("/api/Servers/GetDefaultServer", HttpContext.Current.User.Identity.Name).Result; //TODO
+            return Read(2);
         }
     }
 }
