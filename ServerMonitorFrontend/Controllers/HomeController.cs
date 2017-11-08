@@ -27,12 +27,12 @@ namespace ServerMonitorFrontend.Controllers
             Server server = serverGateway.GetDefaultServer();
             List<Server> servers = serverGateway.ReadAll();
             var list = serverDetailAverageGateway.GetAllServerDetailAveragesForPeriod(24, server.Id);
-            var graphdatas = new GraphLogic().GetCpuGraphDatas(list, server.Id);
-            var model = new HomeIndexViewModel()
+            
             var graphLogic = new GraphLogic();
             var graphdatas = graphLogic.GetCpuGraphDatas(list, server.Id);
-            var netGraphDatas =graphLogic.GetNetworkGraphDatas(list, server.Id);
-            var model = new GraphModel()
+            var netGraphDatas = graphLogic.GetNetworkGraphDatas(list, server.Id);
+           
+            var model = new HomeIndexViewModel()
             {
                 GraphDatasCpu = graphdatas,
                 GraphDatasNetwork = netGraphDatas,
