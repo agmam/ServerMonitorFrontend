@@ -1,10 +1,10 @@
 ﻿@using ServerMonitorFrontend.Helpers
-@model ServerMonitorFrontend.Models.GraphModel
+@model ServerMonitorFrontend.Models.HomeIndexViewModel
 @{
     ViewBag.Title = "Home Page";
 }
 
-<h1>@Model.Server.Id - @Model.Server.ServerName - @Model.Server.Created</h1>
+@*<h1>@Model.Server.Id - @Model.Server.ServerName - @Model.Server.Created</h1>
 @{
     var s = @Model.Avarages.FindLast(x => x.Id != 0);
 
@@ -12,21 +12,45 @@
     <p>Uptime: @s.UpTime s</p>
     <p>Processes: @s.Processes</p>
     <p>Handles: @s.Handles</p>
-}
+}*@
 
 <div class="row">
     
-    <div class="col-md-6">
-        <canvas id="canvas-Temp-gauge" width="300" height="300"></canvas>
+    <div class="col-md-6 padding-md" style="margin: 10px;">
+        <div class="panel" style="border: 1px solid gray;">
+            <div class="row">
+                <div class="col-md-6 padding-md">
+                    @Html.Partial("~/Views/Home/_TemperatureDetail.cshtml")
+
+                </div>
+                <div class="col-md-6 padding-md">
+                     @Html.Partial("~/Views/Home/_ServerDetail.cshtml")
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 padding-md">
+                    @Html.Partial("~/Views/Home/_RamDetail.cshtml")
+                </div>
+                <div class="col-md-6 padding-md">
+                    @Html.Partial("~/Views/Home/_EventDetail.cshtml")
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6">
+    
+    
+    <div class="col-md-5">
         <div class="row">
-            <canvas id="canvas-cpu-graph" width="400" height="400"></canvas>
+            <div class="outer-canvas-container" style="margin-top:15px;">
+                <canvas id="canvas-cpu-graph" class="box-shadow padding-canvas"></canvas>
+            </div>
+       
         </div>
         <div class="row">
-            <canvas id="canvas-network-graph" width="400" height="400"></canvas>
+            <div class="outer-canvas-container" style="margin-top:15px;">
+                <canvas id="canvas-network-graph" class="box-shadow padding-canvas"></canvas>            </div>
+       
         </div>
-            
         </div>
 
 </div>
@@ -261,5 +285,21 @@
     }
 
     h();
+
+    function UpdateServerData() {
+        $.ajax({
+            url: "/api/serverDetailsData/" + serverToDisplay,
+            type: 'GET',
+            success: function (data) {
+                //Update the graph with CPU DATA
+                configCpuAndResponseTime.data.datasets[0].data = data.CPUUtilizationGraphData;
+                
+            },
+            error: function (error) {
+                console.log('CPU graph error + ' + error);
+            }
+        });
+    }
+    setInterval(UpdateServerData, 100 * 60 * 1);
     
 </script>

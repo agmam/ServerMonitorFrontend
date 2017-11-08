@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,13 +25,15 @@ namespace ServerMonitorFrontend.Controllers
         public ActionResult Index()
         {
             Server server = serverGateway.GetDefaultServer();
+            List<Server> servers = serverGateway.ReadAll();
             var list = serverDetailAverageGateway.GetAllServerDetailAveragesForPeriod(24, server.Id);
             var graphdatas = new GraphLogic().GetCpuGraphDatas(list, server.Id);
-            var model = new GraphModel()
+            var model = new HomeIndexViewModel()
             {
                 GraphDatasCpu = graphdatas,
                 Avarages = list,
-                Server = server
+                Server = server,
+                ServerList = servers
             };
             return View(model);
         }

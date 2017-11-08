@@ -1,0 +1,53 @@
+﻿
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Events
+    </div>
+    <div class="panel-body fixed-panel">
+        <table class="table table-bordred table-striped">
+            <thead>
+                <tr>
+                    @*<th>Type</th>
+                    <th>Value</th>
+                    <th>Date</th>
+                    <th>Seen</th>
+                    <th>Info</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @*@foreach (var e in Model.Events)
+                {
+
+                    <tr class="table-row">
+                        @if (Model.Events != null)
+                        {
+                            if (e.EventType != null)
+                            {
+                                <th>@e.EventType.Name</th>
+                            }
+                            if (e.EventType.Name != StaticStrings.ServerDown && e.EventType.Name != StaticStrings.ServerUp)
+                            {
+                                <th>@e.Value</th>
+                            }
+                            else
+                            {
+                        <th></th>}
+                            <th>@e.Created</th>
+                            if (e.Notification != null && e.Notification.Seen == false)
+                            {
+                                <th class="seen-warning-column row-@e.NotificationId" data-id="@e.NotificationId">
+                                    <i class="fa fa-warning" id="table-row-color-@e.EventType.Risk"></i>
+                                </th>
+                            }
+                            else
+                            {
+                                <th><i class="fa fa-check green"></i></th>
+                            }
+                            <th class="event-info" data-id="@e.Id"><i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;"></i></th>
+                        }
+                    </tr>
+                }*@
+            </tbody>
+        </table>
+    </div>
+</div>

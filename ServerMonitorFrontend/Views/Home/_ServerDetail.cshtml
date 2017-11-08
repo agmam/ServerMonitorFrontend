@@ -1,0 +1,46 @@
+﻿
+<div class="panel panel-primary" style="margin-right: 1px;">
+    <div class="panel-heading">
+        @Html.DropDownList("server-dropdown",
+            new SelectList(Model.ServerDataViewModel.Servers, "Id", "Name", 0),
+            new { @class = "myDropdownServers pull-right" })
+        <h3 class="panel-title">
+            Server details
+        </h3>
+    </div>
+    <div class="panel-body fixed-panel">
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <th>Server status</th>
+                <th>
+                    <div class="led-box">
+                        <div class="led-green" id="led-lamp"></div>
+                    </div>
+                </th>
+            </tr>
+
+            <tr>
+                <th>Data received</th>
+                <th id="dataReceivedDate" title="Data received"></th>
+            </tr>
+            <tr>
+                <th id="UpDownTime">Up time</th>
+                <th>
+                    <div id="uptimeDiv">
+                        <p id="upTime"></p>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th>Threads</th>
+                <th id="currentThreads" title="Current threads"></th>
+            </tr>
+            <tr>
+                <th>Processers</th>
+                <th id="currentProcesses" title="Processer"></th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

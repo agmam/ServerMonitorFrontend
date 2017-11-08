@@ -7,7 +7,7 @@ using ServerMonitorFrontend.Logic;
 
 namespace ServerMonitorFrontend.Models
 {
-    public class GraphModel
+    public class HomeIndexViewModel
     {
         public List<GraphData> GraphDatasCpu { get; set; }
         public List<GraphData> GraphDatasNetwork { get; set; }

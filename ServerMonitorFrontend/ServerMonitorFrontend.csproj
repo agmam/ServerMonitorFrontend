@@ -238,7 +238,7 @@
     <Compile Include="Helpers\JsonHelper.cs" />
     <Compile Include="Models\GraphData.cs" />
     <Compile Include="Logic\GraphLogic.cs" />
-    <Compile Include="Models\GraphModel.cs" />
+    <Compile Include="Models\HomeIndexViewModel.cs" />
     <Compile Include="Models\JsonBadRequest.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Gateways\AServiceGateway.cs" />
@@ -340,6 +340,9 @@
     <Content Include="Views\Home\Servers.cshtml" />
     <Content Include="Views\Home\RenderPartialView.cshtml" />
     <Content Include="Views\Home\_ServerDetail.cshtml" />
+    <Content Include="Views\Home\_TemperatureDetail.cshtml" />
+    <Content Include="Views\Home\_EventDetail.cshtml" />
+    <Content Include="Views\Home\_RamDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
