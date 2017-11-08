@@ -9,7 +9,8 @@ namespace ServerMonitorFrontend.Models
 {
     public class GraphModel
     {
-        public List<GraphData> GraphDatas { get; set; }
+        public List<GraphData> GraphDatasCpu { get; set; }
+        public List<GraphData> GraphDatasNetwork { get; set; }
         public List<ServerDetailAverage> Avarages { get; set; }
         public Server Server { get; set; }
     }

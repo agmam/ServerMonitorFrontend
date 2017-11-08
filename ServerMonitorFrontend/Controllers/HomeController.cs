@@ -28,7 +28,7 @@ namespace ServerMonitorFrontend.Controllers
             var graphdatas = new GraphLogic().GetCpuGraphDatas(list, server.Id);
             var model = new GraphModel()
             {
-                GraphDatas = graphdatas,
+                GraphDatasCpu = graphdatas,
                 Avarages = list,
                 Server = server
             };

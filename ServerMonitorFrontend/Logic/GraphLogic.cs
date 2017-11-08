@@ -33,5 +33,28 @@ namespace ServerMonitorFrontend.Logic
             graphDatas.Add(graphData);
             return graphDatas;
         }
+        public List<GraphData> GetNetworkGraphDatas(List<ServerDetailAverage> serverDetailAverages, int serverId)
+        {
+            List<GraphData> graphDatas = new List<GraphData>();
+
+            foreach (var sa in serverDetailAverages)
+            {
+                GraphData gd = new GraphData()
+                {
+                    X = sa.Created,
+                    Y = sa.CPUUtilization
+                };
+                graphDatas.Add(gd);
+            }
+            var detials = serverDetailGateway.ReadAllFromServer(serverId);
+            var ave = detials.Average(x => x.CPUUtilization);// udregner gennemsnittet af de nyeste serverdetails for det seneste graf punkt
+            var graphData = new GraphData()
+            {
+                Y = ave,
+                X = DateTime.Now
+            };
+            graphDatas.Add(graphData);
+            return graphDatas;
+        }
     }
 }
