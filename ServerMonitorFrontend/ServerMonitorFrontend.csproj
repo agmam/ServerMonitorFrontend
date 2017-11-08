@@ -339,6 +339,7 @@
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\Home\Servers.cshtml" />
     <Content Include="Views\Home\RenderPartialView.cshtml" />
+    <Content Include="Views\Home\_ServerDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
