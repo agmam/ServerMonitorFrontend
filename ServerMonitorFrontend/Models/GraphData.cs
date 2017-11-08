@@ -7,11 +7,11 @@ namespace ServerMonitorFrontend.Logic
         /// <summary>
         /// Time Created
         /// </summary>
-        public DateTime X { get; set; }
+        public DateTime x { get; set; }
 
         /// <summary>
         /// Utilization or usage
         /// </summary>
-        public decimal Y { get; set; }
+        public decimal y { get; set; }
     }
 }

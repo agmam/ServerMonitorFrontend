@@ -14,6 +14,7 @@ namespace ServerMonitorFrontend.Controllers
     
     public class HomeController : Controller
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IServiceGateway<ServerDetail> sd = new BLLFacade().GetServerDetailGateway();
 
         private readonly IServerDetailAverageGateway serverDetailAverageGateway =
@@ -22,27 +23,36 @@ namespace ServerMonitorFrontend.Controllers
         private readonly IServerGateway serverGateway =
             new BLLFacade().GetServerGateway();
 
-        public ActionResult Index()
+        public ActionResult Index(int id = 2)
         {
-            Server server = serverGateway.GetDefaultServer();
+            var model = GenerateViewModel(id);
+            return View(model);
+        }
+
+        private HomeIndexViewModel GenerateViewModel(int id)
+        {
+            var serverLogic = new ServerLogic();
+            var serverModel = serverLogic.getServerModel(id);
+
             List<Server> servers = serverGateway.ReadAll();
-            var list = serverDetailAverageGateway.GetAllServerDetailAveragesForPeriod(24, server.Id);
-            
+            var list = serverDetailAverageGateway.GetAllServerDetailAveragesForPeriod(24, serverModel.Server.Id);
+
+
             var graphLogic = new GraphLogic();
-            var graphdatas = graphLogic.GetCpuGraphDatas(list, server.Id);
-            var netGraphDatas = graphLogic.GetNetworkGraphDatas(list, server.Id);
-           
+            var graphdatas = graphLogic.GetCpuGraphDatas(list, serverModel.Server.Id);
+            var netGraphDatas = graphLogic.GetNetworkGraphDatas(list, serverModel.Server.Id);
+
             var model = new HomeIndexViewModel()
             {
                 GraphDatasCpu = graphdatas,
                 GraphDatasNetwork = netGraphDatas,
                 Avarages = list,
-                Server = server,
-                ServerList = servers
+                ServerList = servers,
+                ServerModel = serverModel
             };
-            return View(model);
+            return model;
         }
-        
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -57,10 +67,11 @@ namespace ServerMonitorFrontend.Controllers
            
             return View();
         }
-
-        public ActionResult RenderPartialView()
+        [HttpGet]
+        [Route("home/GetServerModel/{serverId}")]
+        public ActionResult GetServerModel(int serverId)
         {
-            return PartialView(serverGateway.ReadAll());
+           return Json(GenerateViewModel(serverId), JsonRequestBehavior.AllowGet);
         }
     }
 }

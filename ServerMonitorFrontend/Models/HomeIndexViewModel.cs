@@ -14,5 +14,6 @@ namespace ServerMonitorFrontend.Models
         public List<ServerDetailAverage> Avarages { get; set; }
         public Server Server { get; set; }
         public List<Server> ServerList { get; set; }
+        public ServerModel ServerModel { get; internal set; }
     }
 }

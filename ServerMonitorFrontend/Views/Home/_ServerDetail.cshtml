@@ -1,8 +1,8 @@
-﻿
+﻿@model ServerMonitorFrontend.Models.HomeIndexViewModel
 <div class="panel panel-primary" style="margin-right: 1px;">
     <div class="panel-heading">
         @Html.DropDownList("server-dropdown",
-            new SelectList(Model.ServerDataViewModel.Servers, "Id", "Name", 0),
+            new SelectList(Model.ServerList, "Id", "ServerName", 0),
             new { @class = "myDropdownServers pull-right" })
         <h3 class="panel-title">
             Server details
@@ -22,13 +22,13 @@
 
             <tr>
                 <th>Data received</th>
-                <th id="dataReceivedDate" title="Data received"></th>
+                <th id="dataReceivedDate" title="Data received">@Model.ServerModel.DataReceived</th>
             </tr>
             <tr>
                 <th id="UpDownTime">Up time</th>
                 <th>
                     <div id="uptimeDiv">
-                        <p id="upTime"></p>
+                        <p id="upTime">@Model.ServerModel.UpTime</p>
                     </div>
                 </th>
             </tr>
@@ -37,8 +37,8 @@
                 <th id="currentThreads" title="Current threads"></th>
             </tr>
             <tr>
-                <th>Processers</th>
-                <th id="currentProcesses" title="Processer"></th>
+                <th>Processes</th>
+                <th id="currentProcesses" title="Processer">@Model.ServerModel.Handles</th>
             </tr>
             </tbody>
         </table>

@@ -18,8 +18,8 @@ namespace ServerMonitorFrontend.Logic
             {
                 GraphData gd = new GraphData()
                 {
-                    X = sa.Created,
-                    Y = sa.CPUUtilization
+                    x = sa.Created,
+                    y = sa.CPUUtilization
                 };
                 graphDatas.Add(gd);
             }
@@ -32,8 +32,8 @@ namespace ServerMonitorFrontend.Logic
             
             var graphData = new GraphData()
             {
-                Y = ave,
-                X = DateTime.Now
+                y = ave,
+                x = DateTime.Now
             };
             graphDatas.Add(graphData);
             return graphDatas;
@@ -46,8 +46,8 @@ namespace ServerMonitorFrontend.Logic
             {
                 GraphData gd = new GraphData()
                 {
-                    X = sa.Created,
-                    Y = sa.NetworkUtilization
+                    x = sa.Created,
+                    y = sa.NetworkUtilization
                 };
                 graphDatas.Add(gd);
             }
@@ -59,8 +59,8 @@ namespace ServerMonitorFrontend.Logic
             }
             var graphData = new GraphData()
             {
-                Y = ave,
-                X = DateTime.Now
+                y = ave,
+                x = DateTime.Now
             };
             graphDatas.Add(graphData);
             return graphDatas;
