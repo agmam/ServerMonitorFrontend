@@ -23,13 +23,18 @@ namespace ServerMonitorFrontend.Logic
                 };
                 graphDatas.Add(gd);
             }
+            decimal ave = 0;
             var detials = serverDetailGateway.ReadAllFromServer(serverId);
-            var ave = detials.Average(x=> x.CPUUtilization);// udregner gennemsnittet af de nyeste serverdetails for det seneste graf punkt
+            if (detials.Count > 0)
+            {
+                 ave = detials.Average(x => x.CPUUtilization);// udregner gennemsnittet af de nyeste serverdetails for det seneste graf punkt
+            }
+            
             var graphData = new GraphData()
             {
                 Y = ave,
                 X = DateTime.Now
-            }; 
+            };
             graphDatas.Add(graphData);
             return graphDatas;
         }
@@ -42,12 +47,16 @@ namespace ServerMonitorFrontend.Logic
                 GraphData gd = new GraphData()
                 {
                     X = sa.Created,
-                    Y = sa.CPUUtilization
+                    Y = sa.NetworkUtilization
                 };
                 graphDatas.Add(gd);
             }
+            decimal ave = 0;
             var detials = serverDetailGateway.ReadAllFromServer(serverId);
-            var ave = detials.Average(x => x.CPUUtilization);// udregner gennemsnittet af de nyeste serverdetails for det seneste graf punkt
+            if (detials.Count > 0)
+            {
+                ave = detials.Average(x => x.NetworkUtilization);// udregner gennemsnittet af de nyeste serverdetails for det seneste graf punkt
+            }
             var graphData = new GraphData()
             {
                 Y = ave,
