@@ -7,7 +7,7 @@ namespace Entities.Entities
     {
         public int Id { get; set; }
         public DateTime Created { get; set; }
-        public string Name { get; private set; }
+        public string Name { get; set; }
         public bool ShouldNotify { get; set; }
         public decimal PeakValue { get; set; }
         public int RiskEstimate { get; set; }

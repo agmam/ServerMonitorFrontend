@@ -40,7 +40,7 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
 
         public List<Event> ReadAllFromServer(int id)
         {
-            var Event = WebApiService.instance.GetAsync<List<Event>>("/api/Events/ReadAllFromServer/" + id, HttpContext.Current.User.Identity.Name).Result;
+            var Event = WebApiService.instance.GetAsync<List<Event>>("/api/Events/GetEventsFromServer/" + id, HttpContext.Current.User.Identity.Name).Result;
             return Event;
         }
     }

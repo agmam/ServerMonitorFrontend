@@ -47,7 +47,7 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
         public Server GetDefaultServer()
         {
             //var Server = WebApiService.instance.GetAsync<Server>("/api/Servers/GetDefaultServer", HttpContext.Current.User.Identity.Name).Result; //TODO
-            return Read(2);
+            return Read(1);
         }
     }
 }

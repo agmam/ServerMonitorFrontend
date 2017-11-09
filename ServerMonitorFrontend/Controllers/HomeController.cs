@@ -11,7 +11,7 @@ using ServerMonitorFrontend.Models;
 
 namespace ServerMonitorFrontend.Controllers
 {
-    
+
     public class HomeController : Controller
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -22,8 +22,9 @@ namespace ServerMonitorFrontend.Controllers
 
         private readonly IServerGateway serverGateway =
             new BLLFacade().GetServerGateway();
-
-        public ActionResult Index(int id = 2)
+        private readonly IServiceGateway<Event> eventGateway =
+            new BLLFacade().GetEventGateway();
+        public ActionResult Index(int id = 1)
         {
             var model = GenerateViewModel(id);
             return View(model);
@@ -41,14 +42,16 @@ namespace ServerMonitorFrontend.Controllers
             var graphLogic = new GraphLogic();
             var graphdatas = graphLogic.GetCpuGraphDatas(list, serverModel.Server.Id);
             var netGraphDatas = graphLogic.GetNetworkGraphDatas(list, serverModel.Server.Id);
-
+            
             var model = new HomeIndexViewModel()
             {
                 GraphDatasCpu = graphdatas,
                 GraphDatasNetwork = netGraphDatas,
                 Avarages = list,
                 ServerList = servers,
-                ServerModel = serverModel
+                ServerModel = serverModel,
+                Events = eventGateway.ReadAllFromServer(id)
+                
             };
             return model;
         }
@@ -56,22 +59,22 @@ namespace ServerMonitorFrontend.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-           var isauth = User.Identity.IsAuthenticated;
+            var isauth = User.Identity.IsAuthenticated;
             return View();
         }
 
         public ActionResult Contact()
         {
-           
+
             ViewBag.Message = "Your contact page.";
-           
+
             return View();
         }
         [HttpGet]
         [Route("home/GetServerModel/{serverId}")]
         public ActionResult GetServerModel(int serverId)
         {
-           return Json(GenerateViewModel(serverId), JsonRequestBehavior.AllowGet);
+            return Json(GenerateViewModel(serverId), JsonRequestBehavior.AllowGet);
         }
     }
 }

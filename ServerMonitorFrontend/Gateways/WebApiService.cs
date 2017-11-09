@@ -65,27 +65,35 @@ namespace ServerMonitorFrontend.Gateways
 
         public async Task<T> GetAsync<T>(string action, string authToken = null)
         {
-            using (var client = new HttpClient())
+            try
             {
-                SetAuthHeader(authToken, client);
-
-
-                using (Stream s = client.GetStreamAsync(ActionUri(action)).Result)
-                using (StreamReader sr = new StreamReader(s))
-                using (JsonReader reader = new JsonTextReader(sr))
+                using (var client = new HttpClient())
                 {
-                    JsonSerializer serializer = new JsonSerializer();
+                    SetAuthHeader(authToken, client);
 
-                    // read the json from a stream
-                    // json size doesn't matter because only a small piece is read at a time from the HTTP request
-                    T t = serializer.Deserialize<T>(reader);
-                    return t;
+
+                    //using (Stream s = await client.GetStreamAsync(ActionUri(action)))
+                    //using (StreamReader sr = new StreamReader(s))
+                    //using (JsonReader reader = new JsonTextReader(sr))
+                    //{
+                    //    JsonSerializer serializer = new JsonSerializer();
+
+                    //    // read the json from a stream
+                    //    // json size doesn't matter because only a small piece is read at a time from the HTTP request
+                    //    T t = serializer.Deserialize<T>(reader);
+                    //    return t;
+                    //}
+
+
+                    var result = client.GetAsync(ActionUri(action)).Result;
+                    return await DeserializeObject<T>(result);
                 }
-
-
-                //var result = client.GetAsync(ActionUri(action)).Result;
-                // return await DeserializeObject<T>(result);
             }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
         }
 
         private static void SetAuthHeader(string authToken, HttpClient client)

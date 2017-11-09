@@ -15,5 +15,6 @@ namespace ServerMonitorFrontend.Models
         public Server Server { get; set; }
         public List<Server> ServerList { get; set; }
         public ServerModel ServerModel { get; internal set; }
+        public List<Event> Events { get; set; }
     }
 }
