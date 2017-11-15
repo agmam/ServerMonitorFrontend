@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Entities.Entities;
+using ServerMonitorFrontend.Logic;
 
 namespace ServerMonitorFrontend.Models
 {
@@ -16,7 +17,7 @@ namespace ServerMonitorFrontend.Models
         public decimal RAMTotal { get; set; }
         public Server Server { get; set; }
         public bool ServerUp { get; set; }
-        public decimal Temperature { get; set; }
+        public decimal CurrentTemperature { get; set; }
         public DateTime DataReceived { get; internal set; }
         public string UpTime { get; set; }
     }

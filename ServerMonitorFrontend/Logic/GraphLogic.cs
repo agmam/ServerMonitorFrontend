@@ -65,5 +65,33 @@ namespace ServerMonitorFrontend.Logic
             graphDatas.Add(graphData);
             return graphDatas;
         }
+
+        public List<GraphData> GetTemperatureGraphDatas(List<ServerDetailAverage> serverDetailAverages, int serverId)
+        {
+            List<GraphData> graphDatas = new List<GraphData>();
+
+            foreach (var sa in serverDetailAverages)
+            {
+                GraphData gd = new GraphData()
+                {
+                    x = sa.Created,
+                    y = sa.Temperature
+                };
+                graphDatas.Add(gd);
+            }
+            decimal ave = 0;
+            var detials = serverDetailGateway.ReadAllFromServer(serverId);
+            if (detials.Count > 0)
+            {
+                ave = detials.Average(x => x.Temperature);// udregner gennemsnittet af de nyeste serverdetails for det seneste graf punkt
+            }
+            var graphData = new GraphData()
+            {
+                y = ave,
+                x = DateTime.Now
+            };
+            graphDatas.Add(graphData);
+            return graphDatas;
+        }
     }
 }

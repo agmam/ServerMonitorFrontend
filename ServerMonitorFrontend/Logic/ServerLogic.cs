@@ -27,7 +27,7 @@ namespace ServerMonitorFrontend.Models
                 //Server up
                 serverModel.ServerUp = true;
                 var latestServerDetail = serverDetails.LastOrDefault() ?? new ServerDetail();
-                serverModel.Temperature = latestServerDetail.Temperature;
+                serverModel.CurrentTemperature = latestServerDetail.Temperature;
                 serverModel.RAMTotal = latestServerDetail.RAMTotal;
                 serverModel.BytesReceived = latestServerDetail.BytesReceived;
                 serverModel.BytesSent = latestServerDetail.BytesSent;

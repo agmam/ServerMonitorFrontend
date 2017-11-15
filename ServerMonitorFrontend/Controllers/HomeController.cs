@@ -42,11 +42,14 @@ namespace ServerMonitorFrontend.Controllers
             var graphLogic = new GraphLogic();
             var graphdatas = graphLogic.GetCpuGraphDatas(list, serverModel.Server.Id);
             var netGraphDatas = graphLogic.GetNetworkGraphDatas(list, serverModel.Server.Id);
-            
+            var tempGraphData = graphLogic.GetTemperatureGraphDatas(list, serverModel.Server.Id);
+
+
             var model = new HomeIndexViewModel()
             {
                 GraphDatasCpu = graphdatas,
                 GraphDatasNetwork = netGraphDatas,
+                GraphDatasTemperature = tempGraphData,
                 Avarages = list,
                 ServerList = servers,
                 ServerModel = serverModel,

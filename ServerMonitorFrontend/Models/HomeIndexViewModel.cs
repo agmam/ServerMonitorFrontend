@@ -11,6 +11,7 @@ namespace ServerMonitorFrontend.Models
     {
         public List<GraphData> GraphDatasCpu { get; set; }
         public List<GraphData> GraphDatasNetwork { get; set; }
+        public List<GraphData> GraphDatasTemperature { get; set; }
         public List<ServerDetailAverage> Avarages { get; set; }
         public Server Server { get; set; }
         public List<Server> ServerList { get; set; }

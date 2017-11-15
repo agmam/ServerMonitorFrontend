@@ -5,7 +5,7 @@
 }
 
 <div class="row">
-    
+
     <div class="col-md-6 padding-md" style="margin: 10px;">
         <div class="panel" style="border: 1px solid gray;">
             <div class="row">
@@ -14,7 +14,7 @@
 
                 </div>
                 <div class="col-md-6 padding-md">
-                     @Html.Partial("~/Views/Home/_ServerDetail.cshtml")
+                    @Html.Partial("~/Views/Home/_ServerDetail.cshtml")
                 </div>
             </div>
             <div class="row">
@@ -27,21 +27,22 @@
             </div>
         </div>
     </div>
-    
-    
+
+
     <div class="col-md-5">
         <div class="row">
             <div class="outer-canvas-container" style="margin-top:15px;">
                 <canvas id="canvas-cpu-graph" class="box-shadow padding-canvas"></canvas>
             </div>
-       
+
         </div>
         <div class="row">
             <div class="outer-canvas-container" style="margin-top:15px;">
-                <canvas id="canvas-network-graph" class="box-shadow padding-canvas"></canvas>            </div>
-       
+                <canvas id="canvas-network-graph" class="box-shadow padding-canvas"></canvas>
+            </div>
+
         </div>
-        </div>
+    </div>
 
 </div>
 
@@ -61,25 +62,32 @@
     //Get the canvas
     var ctxCpu = document.getElementById("canvas-cpu-graph").getContext("2d");
     var ctxNetwork = document.getElementById("canvas-network-graph").getContext("2d");
-    
+
     //Configuration for CPU graph
     var configCpu = {
-        type: 'line',
-        data: {
-            datasets: [{
-                lineTension:0,
-                label: "CPU Utilization in percentage",
-                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-                borderColor: window.chartColors.blue,
-                fill: false,
-                data: @Html.JsonInsert(Model.GraphDatasCpu)
+            type: 'line',
+            data: {
+                datasets: [{
+                    lineTension: 0,
+                    label: "CPU Utilization in percentage",
+                    backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                    data: @Html.JsonInsert(Model.GraphDatasCpu),
+                    fill: false,
+                    borderColor: window.chartColors.blue
+                }, {
+                    lineTension: 0,
+                    label: "Temperature",
+                    backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                    data: @Html.JsonInsert(Model.GraphDatasTemperature),
+                    fill: false,
+                    borderColor: window.chartColors.red
             }]
         },
         options: {
             responsive: true,
             title: {
                 display: true,
-                text: "CPU Utilization",
+                text: "CPU Utilization/Temperature",
                 fontSize: 16
             },
             scales: {
@@ -119,6 +127,19 @@
                     ticks: {
                         fontSize: 14
                     }
+                },{
+                    position: "right",
+                    id: "y-axis-1",
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Temperature',
+                        fontSize: 14
+
+                    },
+                    ticks: {
+                        fontSize: 14
+                    }
                 }]
             },
             legend:{
@@ -127,8 +148,11 @@
             tooltips: {
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        var percentage = data.datasets[0].data[tooltipItem.index].y;
-                        return percentage + ' %';
+                        if (tooltipItem.datasetIndex === 0) {
+                            return Math.round(data.datasets[0].data[tooltipItem.index].y) + "%";
+                        } else {
+                            return Math.round(data.datasets[1].data[tooltipItem.index].y) + '°C';
+                        }
                     },
                     title: function(tooltipItems, data) {
                         var tooltipItem = tooltipItems[0];
@@ -154,7 +178,7 @@
                 borderColor: window.chartColors.red,
                 fill: false,
                 data: @Html.JsonInsert(Model.GraphDatasNetwork)
-            }]
+                }]
         },
         options: {
             responsive: true,
@@ -208,8 +232,7 @@
             tooltips: {
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        var percentage = data.datasets[0].data[tooltipItem.index].y;
-                        return percentage + ' %';
+                            return "Network utilization " + data.datasets[0].data[tooltipItem.index].y;
                     },
                     title: function(tooltipItems, data) {
                         var tooltipItem = tooltipItems[0];
@@ -272,10 +295,10 @@
     gauge.maxValue = 100; // set max gauge value
     gauge.setMinValue(0);  // Prefer setter over gauge.minValue = 0
     gauge.animationSpeed = 44; // set animation speed (32 is default value)
-    gauge.set(@Html.JsonInsert(Model.ServerModel.Temperature)); // set actual value
+    gauge.set(@Html.JsonInsert(Model.ServerModel.CurrentTemperature)); // set actual value
 
     function h() {
-        gauge.set(@Html.JsonInsert(Model.ServerModel.Temperature));
+        gauge.set(@Html.JsonInsert(Model.ServerModel.CurrentTemperature));
     }
 
     h();
@@ -292,7 +315,7 @@
             dataType   : 'json',
             contentType: 'application/json; charset=UTF-8',
             success: function (data) {
-               
+
                 if (data.ServerUp == false) {
                     //LED GREEN
                     $('.led-green').addClass("led-red").removeClass("led-green");
@@ -326,33 +349,36 @@
                     $('#currentThreads').html(data.Threads);
                     $('#currentProcesses').html(data.Processes);
                     $('#dataReceivedDate').html(moment(data.Created).format('DD/MM - HH:mm'));
-                    }
-                
-                
+                }
+
+
                 //Update the graph with CPU DATA
                 $.each(data.GraphDatasCpu, function( index, value ) {
                     value.x = formatJSONDate(value.x);
-                    
+
                 });
                 $.each(data.GraphDatasNetwork, function( index, value ) {
                     value.x = formatJSONDate(value.x);
-                    
+
                 });
-                
-                
+
+
                 configCpu.data.datasets[0].data = data.GraphDatasCpu;
+                configCpu.data.datasets[1].data = data.GraphDatasTemperature;
+
                 configNetwork.data.datasets[0].data = data.GraphDatasNetwork;
-               
-                gauge.set(data.ServerModel.Temperature);
-                
+
+
+                gauge.set(data.ServerModel.CurrentTemperature);
+
                 //RAM
                 configRam.data.datasets[0].data =
                 { "0": PercentUnavailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable),
-                "1":PercentAvailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable)}
-                
+                    "1":PercentAvailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable)}
 
-                
-                
+
+
+
                 //actual update
                 window.ramPie.update();
                 window.NetworkChart.update();
@@ -377,8 +403,8 @@
         var min = doubledigitdate(currentTime.getMinutes());
         var sec =doubledigitdate( currentTime.getSeconds());
         var date = year + "-" + month + "-" + day+"T"+ hours +":"+min+":"+sec;
-       
-      
+
+
         return date;
     }
     function doubledigitdate(num) {
@@ -416,10 +442,10 @@
         }
     };
     function PercentAvailable(total, available) {
-        return percentage = Math.round(available/total*100);
+        return Math.round(available/total*100);
     };
     function PercentUnavailable(total, available) {
-        return percentage = Math.round(100-available/total*100);
+        return Math.round(100-available/total*100);
     };
     var ctxRam = document.getElementById("canvas-ram").getContext("2d");
     window.ramPie = new Chart(ctxRam, configRam);
