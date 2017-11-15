@@ -65,21 +65,24 @@
 
     //Configuration for CPU graph
     var configCpu = {
-            type: 'line',
-            data: {
+        type: 'line',
+       
+        data: {
                 datasets: [{
                     lineTension: 0,
-                    label: "CPU Utilization in percentage",
-                    backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                    label: "CPU Utilization %",
+                    backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
                     data: @Html.JsonInsert(Model.GraphDatasCpu),
                     fill: false,
+                    yAxisID: "y-axis-0",
                     borderColor: window.chartColors.blue
                 }, {
                     lineTension: 0,
-                    label: "Temperature",
+                    label: "Temperature °C",
                     backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
                     data: @Html.JsonInsert(Model.GraphDatasTemperature),
                     fill: false,
+                    yAxisID: "y-axis-1",
                     borderColor: window.chartColors.red
             }]
         },
@@ -143,7 +146,7 @@
                 }]
             },
             legend:{
-                display: false
+                display: true
             },
             tooltips: {
                 callbacks: {
