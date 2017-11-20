@@ -79,5 +79,8 @@ namespace ServerMonitorFrontend.Controllers
         {
             return Json(GenerateViewModel(serverId), JsonRequestBehavior.AllowGet);
         }
+
+        
+        
     }
 }

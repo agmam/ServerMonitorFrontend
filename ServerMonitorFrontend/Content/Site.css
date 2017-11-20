@@ -47,6 +47,18 @@ body {
         background: #dbdbdf;
 }
 
+#ram-unavailable {
+    margin: 20px;
+}
+#temperature-unavailable {
+    margin: 20px;
+}
+
+#myModal {
+    z-index: 2;
+}
+
+
 #datedropdown {    
     width: 300px;
     min-width: 300px;
@@ -874,4 +886,8 @@ span.num {
 .container-navbar {
     margin-left: 20px;
     margin-right: 20px;
+}
+
+.navbar {
+    z-index: 1 !important;
 }

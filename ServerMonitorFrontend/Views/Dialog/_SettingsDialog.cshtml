@@ -1,0 +1,61 @@
+﻿@model ServerMonitorFrontend.Models.SettingsModel
+
+<div class="modal-header">
+    <span class="close">&times;</span>
+    <div style="display:inline-flex">
+        <h4 class="modal-title" id="myModalLabel"><b>Settings</b> </h4>
+    </div>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#settingsGraph" data-toggle="tab">Graph</a></li>
+                @*<li><a href="#settingsServer" data-toggle="tab">Server</a></li>*@
+                <li><a href="#settingsEvent" data-toggle="tab">Event</a></li>
+                @*<li><a href="#settingsEmail" data-toggle="tab">Email</a></li>*@
+            </ul>
+            @using (Ajax.BeginForm("UpdateSetting", "Settings",
+        new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, OnComplete = "Completed", },
+        new { @id = "SettingsForm" }))
+            {
+             
+            }
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <a class="mybtn mybtn-default" id="cancelSettingBtn"><i class="glyphicon glyphicon-remove"></i> Close</a>
+    <a class="mybtn mybtn-default" id="saveSettingsBtn"><i class="glyphicon glyphicon-floppy-disk"></i> Save</a>
+</div>
+<script>
+    window.onclick = function (event) {
+        var modal = $('#myModal');
+        if (event.target == modal) {
+            $('#myModal').css("display", "none");
+        }
+    };
+    $(document).click(function (event) {
+        if (!$(event.target).closest('#myModal').length) {
+            if ($('#myModal').is(":visible")) {
+                $('#myModal').hide();
+            }
+        }
+    });
+
+
+    $('.close').click(function (event) {
+        $('#myModal').css("display", "none");
+    });
+    $('#cancelSettingBtn').click(function (event) {
+        $('#myModal').css("display", "none");
+    });
+
+    $('#saveSettingsBtn').click(function (event) {
+        event.preventDefault();
+        $('#SettingsForm').submit();
+    });
+</script>
+
+
+

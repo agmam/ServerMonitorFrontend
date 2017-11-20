@@ -40,7 +40,13 @@ namespace ServerMonitorFrontend.Models
             else
             {
                 //Server down
-                serverModel.DataReceived =DateTime.Now;
+                // serverModel.DataReceived =DateTime.Now;
+                //Get latest serverdetail 
+
+                var latest = serverDetailsDB.ReadAllFromServer(serverId).OrderByDescending(x => x.Created)
+                    .FirstOrDefault();
+                serverModel.DataReceived = latest?.Created ?? DateTime.Now;
+
                 serverModel.ServerUp = false;
             }
 
