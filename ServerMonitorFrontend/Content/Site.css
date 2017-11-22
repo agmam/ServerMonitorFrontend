@@ -15,6 +15,11 @@ body {
         height: 24px;
 }
 
+#postfix {
+    width: 30px !important;
+    text-align: center;
+}
+
 .peakvalue-div {
     display: inline-flex;
 }
@@ -149,8 +154,8 @@ box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
 
 #editRisk {
     height: 24px;
-    width: 150px;
-        min-width: 150px;
+    width: auto;
+    min-width: 131px;
         padding: 0px 12px;
 }
     

@@ -1,0 +1,85 @@
+﻿@using Entities.Entities
+@model ServerMonitorFrontend.Models.SettingsModel
+
+<div class="yscroll-container">
+    <i class="fa fa-question-circle pull-right" title="You will be notified when the system detects a value above the
+                       peakvalue. The notify checkbox is whether you want to receive an email or not"></i>
+    @{
+
+
+        for (int i = 0; i < Model.EventTypes.Count; i++)
+        {
+            var eventType = Model.EventTypes[i];
+            var postfix = "";
+            var et = new EventType();
+
+            if (et.setName(EventType.Type.LowDiskSpace) == eventType.Name)
+            {
+                postfix = " GB";
+            }
+            else if (et.setName(EventType.Type.LowMemory) == eventType.Name
+                || et.setName(EventType.Type.HighNetworkUtilization) == eventType.Name
+                || et.setName(EventType.Type.Highcpu) == eventType.Name)
+            {
+                postfix = " %";
+            }
+            else if (et.setName(EventType.Type.HighCpuTemperature) == eventType.Name)
+            {
+                postfix = " °C";
+            } //Server down or nothing
+            else
+            {
+                postfix = "";
+            }
+
+            @Html.HiddenFor(m => m.EventTypes[i].Id)
+            @Html.HiddenFor(m => m.EventTypes[i].Name)
+            <div class="event-container">
+                <div>
+                    <p><b>@eventType.Name</b></p>
+                </div>
+                @if (eventType.Name != "ServerUp") //server down/up have no peak value
+                {
+                    <div class="peakvalue-div">
+                        <p>Peak value</p>
+                        @Html.TextBoxFor(m => m.EventTypes[i].PeakValue, eventType.PeakValue.ToString(),
+ new { @class = "form-control", id = "editPeakValue", type = "number", @min = "1", @max = "100" })
+                        @Html.ValidationMessageFor(m => m.EventTypes[i].PeakValue, "Please enter a valid interval",
+ new { @class = "text-danger" })
+                        <p id="postfix">@postfix</p>
+                    </div>
+                }
+
+                <div class="notify-div">
+                    <p>Notify</p>
+                    @Html.CheckBoxFor(m => m.EventTypes[i].ShouldNotify,
+  new { @checked = "checked" })
+                </div>
+
+                <div class="risk-div">
+                    <p>Category</p>
+                    @Html.DropDownListFor(
+           model => model.EventTypes[i].RiskEstimate,
+           new SelectList(
+                  new List<Object>{
+                       new { value = 1 , text = "Danger"  },
+                       new { value = 2 , text = "Warning" },
+                       new { value = 3 , text = "Healthy"}
+                    },
+                  "value",
+                  "text",
+                   Model.EventTypes[i].RiskEstimate
+           ), new { @class = "form-control", id = "editRisk" }
+        )
+                </div>
+            </div>
+
+            if (Model.EventTypes.Count - 1 != i)
+            {
+                <br /><hr />
+            }
+
+        }
+
+    }
+</div>

@@ -9,5 +9,6 @@ namespace ServerMonitorFrontend.Models
     public class SettingsModel
     {
         public List<EventType> EventTypes { get; set; }
+        public List<EmailRecipient> EmailRecipents { get; set; }
     }
 }

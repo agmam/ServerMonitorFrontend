@@ -10,16 +10,22 @@
     <div class="row">
         <div class="col-md-12">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#settingsGraph" data-toggle="tab">Graph</a></li>
-                @*<li><a href="#settingsServer" data-toggle="tab">Server</a></li>*@
-                <li><a href="#settingsEvent" data-toggle="tab">Event</a></li>
-                @*<li><a href="#settingsEmail" data-toggle="tab">Email</a></li>*@
+                <li class="active"><a href="#settingsGeneral" data-toggle="tab">Generel</a></li>
+                <li><a href="#settingsEmail" data-toggle="tab">Email</a></li>
             </ul>
             @using (Ajax.BeginForm("UpdateSetting", "Settings",
         new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, OnComplete = "Completed", },
         new { @id = "SettingsForm" }))
             {
-             
+                <div class="tab-content">
+                    <div id="settingsGeneral" class="tab-pane fade in active">
+                        @Html.Partial("~/Views/Dialog/_SettingsGeneral.cshtml")
+                    </div>
+                    <div id="settingsEmail" class="tab-pane fade">
+                        @Html.Partial("~/Views/Dialog/_SettingsEmail.cshtml")
+                    </div>
+
+                </div>
             }
         </div>
     </div>

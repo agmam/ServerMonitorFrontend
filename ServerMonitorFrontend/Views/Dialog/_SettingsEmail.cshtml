@@ -1,0 +1,55 @@
+﻿@model ServerMonitorFrontend.Models.SettingsModel
+
+<div class="row" id="emailContainer">
+    <div class="container" >
+        @Html.ListBoxFor(m => m.EmailRecipents, new SelectList(Model.EmailRecipents, "Id", "Email"))
+
+
+        <input type="text" name="email" value="email" id="email" />
+        <button class="btn btn-default" id="addBtn">Add</button>
+        <button class="btn btn-default" id="saveBtn">Save</button>
+
+    </div>
+</div>
+<script>
+    $('#addBtn').click(
+        function AddEmailRecipent(event) {
+            event.preventDefault();
+            var email = document.getElementById("email").value;
+            console.log(email);
+            $.ajax({
+                url: "/EmailRecipients/AddEmailRecipent",
+                type: 'POST',
+                data: JSON.stringify({ Email: email }),
+                contentType: 'application/json; charset=UTF-8',
+                success: function (data) {
+                   
+                    $('#emailContainer').load("/EmailRecipients/GetEmailSettingView");
+                    console.log("succes");
+                },
+                error: function (error) {
+                    console.log('Error: ' + JSON.stringify(error));
+                }
+            });
+        });
+    $('#saveBtn').click(
+        function SaveEmailRecipent(event) {
+            event.preventDefault();
+            var email = document.getElementById("email").value;
+            console.log(email);
+            //$.ajax({
+            //    url: "/EmailRecipients/",
+            //    type: 'POST',
+            //    data: JSON.stringify({ Email: email }),
+            //    contentType: 'application/json; charset=UTF-8',
+            //    success: function (data) {
+
+            //        $('#emailContainer').load("/EmailRecipients/GetEmailSettingView");
+            //        console.log("succes");
+            //    },
+            //    error: function (error) {
+            //        console.log('Error: ' + JSON.stringify(error));
+            //    }
+            //});
+        });
+</script>
