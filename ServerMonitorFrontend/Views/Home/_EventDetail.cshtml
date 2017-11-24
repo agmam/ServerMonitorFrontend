@@ -1,4 +1,4 @@
-﻿@model ServerMonitorFrontend.Models.HomeIndexViewModel
+﻿@model IEnumerable<Entities.Entities.Event>
 <div class="panel panel-primary">
     <div class="panel-heading">
         Events
@@ -7,10 +7,10 @@
 
 
     <div class="panel-body fixed-panel">
-        @if (Model.ServerModel.ServerUp)
-    {
-        <table class="table table-bordred table-striped">
-            <thead>
+        @if (Model.ToList().Count > 0)
+        {
+            <table class="table table-bordred table-striped">
+                <thead>
                 <tr>
                     <th>Type</th>
 
@@ -18,13 +18,13 @@
 
                     <th>Info</th>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var e in Model.Events)
+                </thead>
+                <tbody>
+                @foreach (var e in Model)
                 {
 
                     <tr class="table-row">
-                        @if (Model.Events != null)
+                        @if (Model != null)
                         {
                             if (e.EventType != null)
                             {
@@ -33,16 +33,16 @@
 
                             <th>@e.Created</th>
 
-                                <th class="event-info" data-id="@e.Id"><i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;"></i></th>
+                            <th class="event-info" data-id="@e.Id"><i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;"></i></th>
                         }
                     </tr>
                 }
-            </tbody>
-        </table>}
-    else
-    {
-        <p>No events</p>
-    }
-</div>
+                </tbody>
+            </table>}
+        else
+        {
+            <p>No events</p>
+        }
+    </div>
 
 </div>

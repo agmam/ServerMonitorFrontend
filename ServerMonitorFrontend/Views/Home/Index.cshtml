@@ -21,8 +21,8 @@
                 <div class="col-md-6 padding-md">
                     @Html.Partial("~/Views/Home/_RamDetail.cshtml")
                 </div>
-                <div class="col-md-6 padding-md">
-                    @Html.Partial("~/Views/Home/_EventDetail.cshtml")
+                <div id="eventContainer" class="col-md-6 padding-md">
+                    @Html.Partial("~/Views/Home/_EventDetail.cshtml", Model.Events)
                 </div>
             </div>
         </div>
@@ -320,8 +320,7 @@
             dataType   : 'json',
             contentType: 'application/json; charset=UTF-8',
             success: function (data) {
-               
-                
+                $('#eventContainer').load("/Home/GetEventPartialView?serverId="+ serverToDisplay);
                 if (data.ServerModel.ServerUp === false) {
                     //LED GREEN
                     $(".led-green").addClass("led-red").removeClass("led-green");

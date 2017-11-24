@@ -43,7 +43,7 @@ namespace ServerMonitorFrontend.Controllers
             var graphdatas = graphLogic.GetCpuGraphDatas(list, serverModel.Server.Id);
             var netGraphDatas = graphLogic.GetNetworkGraphDatas(list, serverModel.Server.Id);
             var tempGraphData = graphLogic.GetTemperatureGraphDatas(list, serverModel.Server.Id);
-
+            var events = eventGateway.ReadAllFromServer(serverModel.Server.Id);
 
             var model = new HomeIndexViewModel()
             {
@@ -53,7 +53,7 @@ namespace ServerMonitorFrontend.Controllers
                 Avarages = list,
                 ServerList = servers,
                 ServerModel = serverModel,
-                Events = eventGateway.ReadAllFromServer(id)
+                Events = events
                 
             };
             return model;
@@ -80,7 +80,16 @@ namespace ServerMonitorFrontend.Controllers
             return Json(GenerateViewModel(serverId), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        [Route("home/GetEventPartialView/{serverId}")]
+        public ActionResult GetEventPartialView(int serverId)
+        {
+            List<Event> events = eventGateway.ReadAllFromServer(serverId);
+            return PartialView("~/Views/Home/_EventDetail.cshtml", events) ;
+        }
         
-        
+
+
+
     }
 }
