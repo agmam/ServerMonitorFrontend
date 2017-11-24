@@ -235,7 +235,9 @@
             tooltips: {
                 callbacks: {
                     label: function(tooltipItem, data) {
-                            return "Network utilization " + data.datasets[0].data[tooltipItem.index].y;
+                        var util = data.datasets[0].data[tooltipItem.index].y;
+                        var rounded = Math.round(util*10)/10;
+                        return "Network utilization " + rounded;
                     },
                     title: function(tooltipItems, data) {
                         var tooltipItem = tooltipItems[0];
