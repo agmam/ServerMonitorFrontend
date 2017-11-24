@@ -15,6 +15,11 @@ body {
         height: 24px;
 }
 
+#postfix {
+    width: 30px !important;
+    text-align: center;
+}
+
 .peakvalue-div {
     display: inline-flex;
 }
@@ -46,6 +51,18 @@ body {
     display:block;
         background: #dbdbdf;
 }
+
+#ram-unavailable {
+    margin: 20px;
+}
+#temperature-unavailable {
+    margin: 20px;
+}
+
+#myModal {
+    z-index: 2;
+}
+
 
 #datedropdown {    
     width: 300px;
@@ -137,8 +154,8 @@ box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
 
 #editRisk {
     height: 24px;
-    width: 150px;
-        min-width: 150px;
+    width: auto;
+    min-width: 131px;
         padding: 0px 12px;
 }
     
@@ -874,4 +891,8 @@ span.num {
 .container-navbar {
     margin-left: 20px;
     margin-right: 20px;
+}
+
+.navbar {
+    z-index: 1 !important;
 }

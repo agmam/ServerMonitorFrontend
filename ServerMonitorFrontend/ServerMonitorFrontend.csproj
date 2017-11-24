@@ -235,7 +235,9 @@
     <Compile Include="BLLFacade.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApiController.cs" />
+    <Compile Include="Controllers\EmailRecipientsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Filters\HandleApiErrorAttribute.cs" />
     <Compile Include="Gateways\IServerDetailAverageGateway.cs" />
     <Compile Include="Gateways\IServerGateway.cs" />
@@ -263,6 +265,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Logic\ServerLogic.cs" />
     <Compile Include="Models\ServerModel.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SignInResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -348,10 +351,15 @@
     <Content Include="Views\Home\_TemperatureDetail.cshtml" />
     <Content Include="Views\Home\_EventDetail.cshtml" />
     <Content Include="Views\Home\_RamDetail.cshtml" />
+    <Content Include="Views\Dialog\_SettingsDialog.cshtml" />
+    <Content Include="Views\Dialog\_SettingsGeneral.cshtml" />
+    <Content Include="Views\Dialog\_SettingsEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Api\" />
+    <Folder Include="Views\EmailRecipients\" />
+    <Folder Include="Views\Settings\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>

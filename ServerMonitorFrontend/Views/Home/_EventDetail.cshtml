@@ -3,14 +3,19 @@
     <div class="panel-heading">
         Events
     </div>
+
+
+
     <div class="panel-body fixed-panel">
+        @if (Model.ServerModel.ServerUp)
+    {
         <table class="table table-bordred table-striped">
             <thead>
                 <tr>
                     <th>Type</th>
-                  
+
                     <th>Date</th>
-                  
+
                     <th>Info</th>
                 </tr>
             </thead>
@@ -27,12 +32,17 @@
                             }
 
                             <th>@e.Created</th>
-                         
-                            <th class="event-info" data-id="@e.Id"><i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;"></i></th>
+
+                                <th class="event-info" data-id="@e.Id"><i class="fa fa-info-circle" aria-hidden="true" style="cursor: pointer;"></i></th>
                         }
                     </tr>
                 }
             </tbody>
-        </table>
-    </div>
+        </table>}
+    else
+    {
+        <p>No events</p>
+    }
+</div>
+
 </div>

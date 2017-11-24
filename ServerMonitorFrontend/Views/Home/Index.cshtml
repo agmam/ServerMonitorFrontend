@@ -1,7 +1,7 @@
 ﻿@using ServerMonitorFrontend.Helpers
 @model ServerMonitorFrontend.Models.HomeIndexViewModel
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Frontpage";
 }
 
 <div class="row">
@@ -307,9 +307,11 @@
     }
 
     h();
-
+    UpdateServerData();
     $("#server-dropdown").change(function() {
+       
         serverToDisplay = this.options[this.selectedIndex].value;
+       
         UpdateServerData();
     });
 
@@ -320,15 +322,18 @@
             dataType   : 'json',
             contentType: 'application/json; charset=UTF-8',
             success: function (data) {
-
-                if (data.ServerUp == false) {
+               
+                
+                if (data.ServerModel.ServerUp === false) {
                     //LED GREEN
-                    $('.led-green').addClass("led-red").removeClass("led-green");
+                    $(".led-green").addClass("led-red").removeClass("led-green");
+                   
 
                     //SERVER INFORMATION
-                    $('#currentProcesses').html("<i class='fa fa-ban' aria-hidden='true'>");
-                    $('#dataReceivedDate').html("<i class='fa fa-ban' aria-hidden='true'>");
-                    $('#currentThreads').html("<i class='fa fa-ban' aria-hidden='true'>");
+                    $('#UpDownTime').html("Down time");
+                    $('#currentProcesses').hide();
+                    $('#dataReceivedDate').hide();
+                    $('#currentThreads').hide();
 
                     //RAM DIAGRAM
                     $('#ram-available').css("display", "none");
@@ -336,6 +341,12 @@
                     $('#ram-total-text').css("display", "block");
                     $('#ram-available-text').css("display", "block");
 
+                    //TEmperature
+                    $('#temperature-available').css("display", "none");
+                    $('#temperature-unavailable').css("display", "block").css("font-size", "11px");
+                    
+
+                    $('#dataReceivedDate').html(moment(data.ServerModel.DataReceived).format('DD/MM - HH:mm'));
 
 
                 } else {
@@ -347,13 +358,22 @@
                     $('#ram-available-text').html('Free: '+ ConvertToGbFormat(data.RAMAvailable)
                     + ' (' + PercentAvailable(data.RAMTotal, data.RAMAvailable) + '%)');
 
+                    //TEmperature
+                    $('#temperature-available').css("display", "block");
+                    $('#temperature-unavailable').css("display", "none");  
+
+
                     //LED RED
                     $('.led-red').addClass("led-green").removeClass("led-red");
 
                     $('#UpDownTime').html("Up time");
-                    $('#currentThreads').html(data.Threads);
-                    $('#currentProcesses').html(data.Processes);
-                    $('#dataReceivedDate').html(moment(data.Created).format('DD/MM - HH:mm'));
+                    $('#currentProcesses').show();
+                    $('#dataReceivedDate').show();
+                    $('#currentThreads').show();
+                    $('#currentThreads').html(data.ServerModel.Threads);
+                    $('#upTime').html(data.ServerModel.UpTime);
+                    $('#currentProcesses').html(data.ServerModel.Handles);
+                    $('#dataReceivedDate').html(moment(data.ServerModel.DataReceived).format('DD/MM - HH:mm'));
                 }
 
 
