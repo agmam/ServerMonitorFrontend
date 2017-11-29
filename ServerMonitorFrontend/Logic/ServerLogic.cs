@@ -33,6 +33,7 @@ namespace ServerMonitorFrontend.Models
                 serverModel.BytesSent = latestServerDetail.BytesSent;
                 serverModel.Handles = latestServerDetail.Handles;
                 serverModel.Processes = latestServerDetail.Processes;
+                serverModel.Threads = latestServerDetail.Threads;
                 serverModel.RAMAvailable = latestServerDetail.RAMAvailable;
                 serverModel.DataReceived = latestServerDetail.Created;
                 serverModel.UpTime = CalculateUpTime(latestServerDetail.UpTime);

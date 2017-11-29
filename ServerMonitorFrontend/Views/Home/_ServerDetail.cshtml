@@ -36,11 +36,15 @@
             </tr>
             <tr>
                 <th>Threads</th>
-                <th id="currentThreads" title="Current threads"></th>
+                <th id="currentThreads" title="Current threads">@Model.ServerModel.Threads</th>
+            </tr>
+            <tr>
+                <th>Processes</th>
+                <th id="currentProcesses" title="Processer">@Model.ServerModel.Processes</th>
             </tr>
                 <tr>
-                    <th>Processes</th>
-                    <th id="currentProcesses" title="Processer">@Model.ServerModel.Handles</th>
+                    <th>Handles</th>
+                    <th id="currentHandles" title="Processer">@Model.ServerModel.Handles</th>
                 </tr>
           
             </tbody>

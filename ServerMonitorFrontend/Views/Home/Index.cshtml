@@ -333,6 +333,7 @@
                     $('#currentProcesses').hide();
                     $('#dataReceivedDate').hide();
                     $('#currentThreads').hide();
+                    $('#currentHandles').hide();
 
                     //RAM DIAGRAM
                     $('#ram-available').css("display", "none");
@@ -370,8 +371,10 @@
                     $('#dataReceivedDate').show();
                     $('#currentThreads').show();
                     $('#currentThreads').html(data.ServerModel.Threads);
+                    $('#currentHandles').show();
+                    $('#currentHandles').html(data.ServerModel.Handles);
                     $('#upTime').html(data.ServerModel.UpTime);
-                    $('#currentProcesses').html(data.ServerModel.Handles);
+                    $('#currentProcesses').html(data.ServerModel.Processes);
                     $('#dataReceivedDate').html(moment(data.ServerModel.DataReceived).format('DD/MM - HH:mm'));
                 }
 
