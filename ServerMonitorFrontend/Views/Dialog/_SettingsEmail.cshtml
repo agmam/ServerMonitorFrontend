@@ -1,16 +1,50 @@
 ﻿@model ServerMonitorFrontend.Models.SettingsModel
 
 <div class="row" id="emailContainer">
-    <div class="container" >
-        @Html.ListBoxFor(m => m.EmailRecipents, new SelectList(Model.EmailRecipents, "Id", "Email"))
 
+    @*@Html.ListBoxFor(m => m.EmailRecipents, new SelectList(Model.EmailRecipents, "Id", "Email"))*@
 
-        <input type="text" name="email" value="email" id="email" />
-        <button class="btn btn-default" id="addBtn">Add</button>
-        <button class="btn btn-default" id="saveBtn">Save</button>
+    <div class="panel-primary" style="margin-right: 1px;">
 
+        <div class="panel-body fixed-with-scroll">
+            <table id="emailTable" class="table table-striped">
+                <tbody>
+                    @foreach (var r in Model.EmailRecipents)
+                    {
+
+                        <tr>
+                            <th id="@r.Id">
+                                <div>
+                                    @r.Email
+                                    <button class="glyphicon glyphicon-pencil pull-right" id="editBtn" onClick="ChangetoEdit(@r.Id)"></button>
+                                    <button class="glyphicon glyphicon-remove-sign pull-right" id="deleteBtn" onClick="deleteEmail(@r.Id)"></button>
+                                </div>
+                                <div style="display: none">
+                                    <input name="update" type="text" value="@r.Email" />
+                                    <button class="glyphicon glyphicon-ok pull-right" id="SaveEditBtn" onClick="editEmail(@r.Id)"></button>
+                                    <button class="glyphicon glyphicon-remove-sign pull-right" id="stopEditBtn" onClick="ChangefromEdit(@r.Id)"></button>
+                                </div>
+                            </th>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <input type="text" name="email" value="email" id="email" />
+    <button class="btn btn-default" id="addBtn">Add</button> <p id="deletedtext" style="color: red"></p>
+    <div class="container">
+        <div id="editEmailModal" class="modal">
+            <div class="modal-content">
+
+            </div>
+
+        </div>
     </div>
 </div>
+
 <script>
     $('#addBtn').click(
         function AddEmailRecipent(event) {
@@ -23,7 +57,7 @@
                 data: JSON.stringify({ Email: email }),
                 contentType: 'application/json; charset=UTF-8',
                 success: function (data) {
-                   
+
                     $('#emailContainer').load("/EmailRecipients/GetEmailSettingView");
                     console.log("succes");
                 },
@@ -32,24 +66,60 @@
                 }
             });
         });
-    $('#saveBtn').click(
-        function SaveEmailRecipent(event) {
-            event.preventDefault();
-            var email = document.getElementById("email").value;
-            console.log(email);
-            //$.ajax({
-            //    url: "/EmailRecipients/",
-            //    type: 'POST',
-            //    data: JSON.stringify({ Email: email }),
-            //    contentType: 'application/json; charset=UTF-8',
-            //    success: function (data) {
 
-            //        $('#emailContainer').load("/EmailRecipients/GetEmailSettingView");
-            //        console.log("succes");
-            //    },
-            //    error: function (error) {
-            //        console.log('Error: ' + JSON.stringify(error));
-            //    }
-            //});
+
+    function editEmail(Id) {
+        event.preventDefault();
+        var Email = $(document.getElementById(Id)).children("div:nth-child(2)").find('input').val();
+        console.log(Email);
+        console.log(Id);
+        $.ajax({
+            url: "/EmailRecipients/EditEmail",
+            type: 'Get',
+            data: {id: Id, email: Email },
+            contentType: 'application/json; charset=UTF-8',
+            success: function (dialog) {
+                $('#emailContainer').load("/EmailRecipients/GetEmailSettingView");
+            },
+            error: function (error) {
+                console.log('Error: ' + JSON.stringify(error));
+            }
         });
+    };
+    function deleteEmail(id) {
+        event.preventDefault();
+
+        $.ajax({
+            url: "/EmailRecipients/DeleteEmail/" + id,
+            type: 'Get',
+            contentType: 'application/json; charset=UTF-8',
+            success: function (isSucces) {
+
+                var element = document.getElementById("deletedtext");
+                element.innerHTML = isSucces + " deleted";
+                $('#emailContainer').load("/EmailRecipients/GetEmailSettingView");
+
+
+            },
+            error: function (error) {
+                console.log('Error: ' + JSON.stringify(error));
+            }
+        });
+    };
+
+    function ChangetoEdit(id) {
+        event.preventDefault();
+        $(document.getElementById(id)).children("div:nth-child(1)").hide();
+        $(document.getElementById(id)).children("div:nth-child(2)").show();
+    }
+
+    function ChangefromEdit(id) {
+        event.preventDefault();
+        $(document.getElementById(id)).children("div:nth-child(1)").show();
+        $(document.getElementById(id)).children("div:nth-child(2)").hide();
+    }
+
+
+
+
 </script>

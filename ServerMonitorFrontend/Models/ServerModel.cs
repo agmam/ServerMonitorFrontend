@@ -14,6 +14,7 @@ namespace ServerMonitorFrontend.Models
         public decimal BytesSent { get; set; }
         public decimal Handles { get; set; }
         public decimal Processes { get; set; }
+        public decimal Threads { get; set; }
         public decimal RAMTotal { get; set; }
         public Server Server { get; set; }
         public bool ServerUp { get; set; }

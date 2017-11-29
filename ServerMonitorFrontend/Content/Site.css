@@ -50,6 +50,11 @@ width: min-content;
     width: 30px !important;
     text-align: center;
 }
+.fixed-with-scroll {
+    overflow-y: scroll;
+height: 400px;
+}
+
 
 .peakvalue-div {
     display: inline-flex;
@@ -324,6 +329,7 @@ body.modal-open {
     width: 38% !important;
 }
 
+
 .field-validation-valid {
     display: none;
 }
@@ -544,7 +550,7 @@ box-shadow: 3px 2px 10px -2px rgba(0,0,0,0.75);
 }
 
 .panel-body {
-    padding: 5px;
+    padding: 4px;
 }
 
 .panel-primary {
