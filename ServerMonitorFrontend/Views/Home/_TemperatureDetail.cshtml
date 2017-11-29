@@ -1,15 +1,18 @@
 ﻿
 <div class="panel panel-primary" style="margin-right: 1px;">
     <div class="panel-heading">
-        Temperature details
+        Temperature  & CPU details
     </div>
     <div class="panel-body fixed-panel no-padding">
         <div id="temperature-unavailable" style="display:none;"><b><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></b></div>
         <div id="temperature-available"  >
-         
-                    <canvas id="canvas-Temp-gauge"  style="bottom: 0;top: 0;left: 0;right: 0;margin: auto;position: absolute"></canvas>
-                
-    
-        </div>
+            <div>
+                <canvas id="canvas-Temp-gauge" class="gauge"></canvas><p class="gauge-temp-header">Temperature</p>
+            </div>
+            <div>
+                <canvas id="canvas-cpu-gauge" class="gauge"></canvas><p class="gauge-cpu-header">CPU</p>
+            </div>
+            </div>
+       
     </div>
 </div>

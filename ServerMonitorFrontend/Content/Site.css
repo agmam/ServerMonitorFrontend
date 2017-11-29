@@ -14,6 +14,37 @@ body {
      width: 150px;
         height: 24px;
 }
+.gauge {
+    margin-top: 20px;
+    max-width: 300px !important;
+    position: absolute;
+
+}
+
+.gauge-temp-header {
+        font-weight: bold;
+   width: min-content;
+    position: absolute;
+    margin-left: 285px;
+}
+.gauge-cpu-header {
+    font-weight: bold;
+width: min-content;
+    position: absolute;
+    margin-left:103px;
+}
+
+
+
+#canvas-cpu-gauge {
+    left: 0px;
+    margin-left: -25px;
+}
+#canvas-Temp-gauge {
+    right: 0px;
+    
+    margin-right: -25px;
+}
 
 #postfix {
     width: 30px !important;
