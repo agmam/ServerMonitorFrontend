@@ -37,5 +37,25 @@ namespace ServerMonitorFrontend.Controllers
             return PartialView("~/Views/Dialog/_SettingsEmail.cshtml", model);
         }
 
+        public void EditEmail(int id, string email)
+        {
+            var recipent = new EmailRecipient {Id = id, Email = email};
+            emailRecipientGateway.Update(recipent);
+            
+        }
+
+        public string DeleteEmail(int id)
+        {
+            var email = emailRecipientGateway.Read(id);
+            if (email != null)
+            {
+                if (emailRecipientGateway.Delete(email))
+                {
+                    return email.Email;
+                }
+            }
+            return "";
+        }
+
     }
 }

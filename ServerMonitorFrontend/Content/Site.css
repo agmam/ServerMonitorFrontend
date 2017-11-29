@@ -19,6 +19,11 @@ body {
     width: 30px !important;
     text-align: center;
 }
+.fixed-with-scroll {
+    overflow-y: scroll;
+height: 400px;
+}
+
 
 .peakvalue-div {
     display: inline-flex;
@@ -292,6 +297,7 @@ body.modal-open {
     margin: 3% auto !important;
     width: 38% !important;
 }
+
 
 .field-validation-valid {
     display: none;
