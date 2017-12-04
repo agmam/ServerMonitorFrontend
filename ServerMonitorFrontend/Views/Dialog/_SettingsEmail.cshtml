@@ -2,7 +2,6 @@
 
 <div class="row" id="emailContainer">
 
-    @*@Html.ListBoxFor(m => m.EmailRecipents, new SelectList(Model.EmailRecipents, "Id", "Email"))*@
 
     <div class="panel-primary" style="margin-right: 1px;">
 
@@ -50,7 +49,12 @@
         function AddEmailRecipent(event) {
             event.preventDefault();
             var email = document.getElementById("email").value;
-            console.log(email);
+            var element = document.getElementById("deletedtext");
+            element.innerHTML = "";
+            if (!validateEmail(email)) {
+                element.innerHTML = "Fill out valid email";
+                return;
+            }
             $.ajax({
                 url: "/EmailRecipients/AddEmailRecipent",
                 type: 'POST',
@@ -66,12 +70,21 @@
                 }
             });
         });
-
+    function validateEmail(email) 
+    {
+        var re = /\S+@@\S+\.\S+/;
+        return re.test(email);
+    }
 
     function editEmail(Id) {
         event.preventDefault();
         var Email = $(document.getElementById(Id)).children("div:nth-child(2)").find('input').val();
-        console.log(Email);
+        var element = document.getElementById("deletedtext");
+        element.innerHTML = "";
+        if (!validateEmail(Email)) {
+            element.innerHTML = "Fill out valid email";
+            return;
+        }
         console.log(Id);
         $.ajax({
             url: "/EmailRecipients/EditEmail",
