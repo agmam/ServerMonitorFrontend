@@ -329,6 +329,11 @@ body.modal-open {
     width: 38% !important;
 }
 
+.addBtnSetting {
+    padding: 5px 15px;
+    margin: 5px 7px;
+    font-size: 14px;
+}
 
 .field-validation-valid {
     display: none;

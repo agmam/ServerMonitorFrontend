@@ -332,6 +332,7 @@
             dataType   : 'json',
             contentType: 'application/json; charset=UTF-8',
             success: function (data) {
+              
                 $('#eventContainer').load("/Home/GetEventPartialView?serverId="+ serverToDisplay);
                 if (data.ServerModel.ServerUp === false) {
                     //LED GREEN
@@ -363,10 +364,10 @@
                     //RAM DIAGRAM
                     $('#ram-available').css("display", "block");
                     $('#ram-unavailable').css("display", "none");
-                    $('#ram-unavailable-text').html('Used: '+ ConvertToGbFormat(GetUsedRAM(data.RAMTotal, data.RAMAvailable))
-                        + ' (' + PercentUnavailable(data.RAMTotal, data.RAMAvailable) + '%)');
-                    $('#ram-available-text').html('Free: '+ ConvertToGbFormat(data.RAMAvailable)
-                    + ' (' + PercentAvailable(data.RAMTotal, data.RAMAvailable) + '%)');
+                    $('#ram-unavailable-text').html('Used: '+ ConvertToGbFormat(GetUsedRAM(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable))
+                        + ' (' + PercentUnavailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable) + '%)');
+                    $('#ram-available-text').html('Free: '+ ConvertToGbFormat(data.ServerModel.RAMAvailable)
+                    + ' (' + PercentAvailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable) + '%)');
 
                     //TEmperature
                     $('#temperature-available').css("display", "block");
@@ -407,7 +408,7 @@
 
 
                 gauge.set(data.ServerModel.CurrentTemperature);
-                gaugecpu.set(data.GraphDatasCpu.FindLast(x =>x.y != -1).y);
+                gaugecpu.set(data.ServerModel.CpuGaugeValue);
 
                 //RAM
                 configRam.data.datasets[0].data =

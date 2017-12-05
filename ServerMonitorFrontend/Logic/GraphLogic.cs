@@ -93,5 +93,7 @@ namespace ServerMonitorFrontend.Logic
             graphDatas.Add(graphData);
             return graphDatas;
         }
+
+       
     }
 }

@@ -37,6 +37,7 @@ namespace ServerMonitorFrontend.Models
                 serverModel.RAMAvailable = latestServerDetail.RAMAvailable;
                 serverModel.DataReceived = latestServerDetail.Created;
                 serverModel.UpTime = CalculateUpTime(latestServerDetail.UpTime);
+                serverModel.CpuGaugeValue = latestServerDetail.CPUUtilization;
             }
             else
             {

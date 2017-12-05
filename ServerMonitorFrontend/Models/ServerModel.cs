@@ -21,5 +21,6 @@ namespace ServerMonitorFrontend.Models
         public decimal CurrentTemperature { get; set; }
         public DateTime DataReceived { get; internal set; }
         public string UpTime { get; set; }
+        public decimal CpuGaugeValue { get; set; }
     }
 }
