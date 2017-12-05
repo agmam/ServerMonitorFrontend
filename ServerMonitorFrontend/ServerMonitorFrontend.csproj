@@ -354,7 +354,6 @@
     <Content Include="Views\Dialog\_SettingsDialog.cshtml" />
     <Content Include="Views\Dialog\_SettingsGeneral.cshtml" />
     <Content Include="Views\Dialog\_SettingsEmail.cshtml" />
-    <Content Include="Views\Dialog\_EditEmailDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
