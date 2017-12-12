@@ -14,7 +14,7 @@ namespace ServerMonitorFrontend
         {
             return new EmailRecipientGateway();
         }
-        public IServiceGateway<Event> GetEventGateway()
+        public IEventGateway GetEventGateway()
         {
             return new EventGateway();
         }

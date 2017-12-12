@@ -1,0 +1,82 @@
+﻿@model ServerMonitorFrontend.Models.ReportViewModel
+@using Entities.Entities
+<div class="row">
+    <div class="row">
+        <div class="col-md-4">
+            <p class="bold">Report summary</p>
+        </div>
+        <div class="col-md-4">
+            <p class="center bold"> @Model.ServerName </p>
+        </div>
+        <div class="col-md-4">
+            <p class="bold pull-right"> @Model.from.ToString("yyyy/MM/dd") - @Model.to.ToString("yyyy/MM/dd") </p>
+        </div>
+    </div>
+    <hr />
+    <br />
+    <div class="row">
+        @{
+            if (Model.DailySummaries != null)
+            {
+                foreach (var dailySummary in Model.DailySummaries)
+                {
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="bold">@dailySummary.Day</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="center bold"></p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="bold">Total events: @dailySummary.DailyEvents.Count</p>
+                        </div>
+                    </div>
+
+
+                    <p style="font-weight: bold">Events:</p>
+                    foreach (var e in dailySummary.DailyEvents)
+                    {
+                        EventType eventType = new EventType();
+
+                        if (eventType.setName(EventType.Type.LowDiskSpace) == e.EventType.Name)
+                        {
+                            <p>Type: @e.EventType.Name </p>
+                            <p>Disk space left: @e.ServerDetailAverage.HarddiskTotalSpace-@e.ServerDetailAverage.HarddiskUsedSpace GB</p>
+                        }
+                        else if (eventType.setName(EventType.Type.HighCpuTemperature) == e.EventType.Name)
+                        {
+                            <p>Type: @e.EventType.Name </p>
+                            <p>Value: @e.ServerDetailAverage.Temperature C</p>
+                        }
+                        else if (eventType.setName(EventType.Type.LowMemory) == e.EventType.Name)
+                        {
+                            <p>Type: @e.EventType.Name </p>
+                            <p>RAM left: @e.ServerDetailAverage.RAMTotal - @e.ServerDetailAverage.RAMAvailable GB</p>
+                        }
+                        else if (eventType.setName(EventType.Type.Highcpu) == e.EventType.Name)
+                        {
+                            <p>Type: @e.EventType.Name </p>
+                            <p>Value: @e.ServerDetailAverage.CPUUtilization %</p>
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+
+                @Html.Partial("~/Views/Report/_ReportNoData.cshtml")
+            }
+        }
+
+    </div>
+    <hr />
+</div>
+<script>
+    $(document).ready(function () {
+
+
+    });
+
+</script>
+

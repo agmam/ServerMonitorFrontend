@@ -6,7 +6,7 @@ using Entities.Entities;
 
 namespace ServerMonitorFrontend.Gateways.SecureGateways
 {
-    public class ServerGateway : IServiceGateway<Server>, IServerGateway
+    public class ServerGateway : IServerGateway
     {
         public Server Create(Server t)
         {

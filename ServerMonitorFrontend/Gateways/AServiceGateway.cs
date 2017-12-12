@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
+using Entities.Entities;
 
 namespace ServerMonitorFrontend.Gateways
 {
@@ -84,7 +85,13 @@ namespace ServerMonitorFrontend.Gateways
                 return t;
             }
         }
+        
+        
         protected abstract List<T> ReadAllFromServerRead(int id, HttpClient client);
+
+        protected abstract List<T> GetServerDetailAverageByRange(int id, DateTime from, DateTime to);
+
+
         private HttpClient Setup(HttpClient client)
         {
             client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApiUri"]);

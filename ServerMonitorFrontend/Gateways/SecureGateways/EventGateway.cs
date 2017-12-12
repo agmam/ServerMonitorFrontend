@@ -6,7 +6,7 @@ using Entities.Entities;
 
 namespace ServerMonitorFrontend.Gateways.SecureGateways
 {
-    public class EventGateway : IServiceGateway<Event>
+    public class EventGateway : IEventGateway
     {
         public Event Create(Event t)
         {
@@ -41,6 +41,15 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
         public List<Event> ReadAllFromServer(int id)
         {
             var Event = WebApiService.instance.GetAsync<List<Event>>("/api/Events/GetEventsFromServer/" + id, HttpContext.Current.User.Identity.Name).Result;
+            return Event;
+        }
+
+        public List<Event> GetAllEventsByRange(DateTime from, DateTime to, int serverId)
+        {
+            var fromdate = from.ToBinary();
+            var todate = to.ToBinary();
+
+            var Event = WebApiService.instance.GetAsync<List<Event>>("/api/Events/GetAllEventsByRange?from=" + fromdate + "&to=" + todate + "&serverId=" + serverId, HttpContext.Current.User.Identity.Name).Result;
             return Event;
         }
     }
