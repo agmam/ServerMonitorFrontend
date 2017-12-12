@@ -1,9 +1,9 @@
 ﻿@model ServerMonitorFrontend.Models.HomeIndexViewModel
 <div class="panel panel-primary" style="margin-right: 1px;" id="Serverdetailpanel">
     <div class="panel-heading">
-        @Html.DropDownList("server-dropdown",
-            new SelectList(Model.ServerList, "Id", "ServerName", 0),
-            new { @class = "myDropdownServers pull-right" })
+       @Html.DropDownList("server-dropdown",
+                     new SelectList(Model.ServerList, "Id", "ServerName", 0),
+                     new { @class = "myDropdownServers pull-right" })
         <h3 class="panel-title">
             Server details
         </h3>

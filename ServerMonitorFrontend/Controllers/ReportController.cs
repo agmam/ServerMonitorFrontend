@@ -21,7 +21,7 @@ namespace ServerMonitorFrontend.Controllers
 
         public ActionResult GenerateReport(DateTime from, DateTime to)
         {
-            int serverId = 5;
+            int serverId = 2;
             ReportLogic rl = new ReportLogic();
             var model = rl.GenerateViewModel(from, to, serverId);
             return PartialView("~/Views/Report/_Report.cshtml", model);
