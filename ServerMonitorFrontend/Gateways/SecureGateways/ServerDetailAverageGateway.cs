@@ -49,5 +49,11 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
             var ServerDetailAverages = WebApiService.instance.GetAsync<List<ServerDetailAverage>>("/api/ServerDetailAverages/GetAllServerDetailAveragesForPeriod?period=" +period+"&serverId="+ serverid, HttpContext.Current.User.Identity.Name).Result;
             return ServerDetailAverages;
         }
+
+        public List<ServerDetailAverage> GetServerDetailAverageByRange(DateTime from, DateTime to, int serverId)
+        {
+            var ServerDetailAverages = WebApiService.instance.GetAsync<List<ServerDetailAverage>>("/api/ServerDetailAverages/GetServerDetailAverageByRange?from=" + from + "&to="+ to +"&serverId=" + serverId, HttpContext.Current.User.Identity.Name).Result;
+            return ServerDetailAverages;
+        }
     }
 }

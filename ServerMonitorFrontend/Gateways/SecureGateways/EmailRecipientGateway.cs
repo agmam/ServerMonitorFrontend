@@ -43,5 +43,10 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
             var EmailRecipient = WebApiService.instance.GetAsync<List<EmailRecipient>>("/api/EmailRecipients/ReadAllFromServer/" + id, HttpContext.Current.User.Identity.Name).Result;
             return EmailRecipient;
         }
+
+        public List<Event> GetServerDetailAverageByRange(int serverId, DateTime from, DateTime to)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

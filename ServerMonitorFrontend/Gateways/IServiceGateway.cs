@@ -15,6 +15,5 @@ namespace ServerMonitorFrontend.Gateways
         bool Delete(T t); // Deletes an instance of the object T 
         bool Update(T t); // Updates an instance of the object T
         List<T> ReadAllFromServer(int id);// can read all assets with customer id * and all changelogs with asset id * etc.
-
     }
 }

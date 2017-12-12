@@ -6,7 +6,7 @@ using Entities.Entities;
 
 namespace ServerMonitorFrontend.Gateways.SecureGateways
 {
-    public class ServerGateway : IServiceGateway<Server>, IServerGateway
+    public class ServerGateway : IServerGateway
     {
         public static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public Server Create(Server t)

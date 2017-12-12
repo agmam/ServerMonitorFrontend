@@ -237,11 +237,14 @@
     <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\EmailRecipientsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Filters\HandleApiErrorAttribute.cs" />
+    <Compile Include="Gateways\IEventGateway.cs" />
     <Compile Include="Gateways\IServerDetailAverageGateway.cs" />
     <Compile Include="Gateways\IServerGateway.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Logic\ReportLogic.cs" />
     <Compile Include="Models\GraphData.cs" />
     <Compile Include="Logic\GraphLogic.cs" />
     <Compile Include="Models\HomeIndexViewModel.cs" />
@@ -264,6 +267,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Logic\ServerLogic.cs" />
+    <Compile Include="Models\ReportViewModel.cs" />
     <Compile Include="Models\ServerModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SignInResult.cs" />
@@ -357,6 +361,9 @@
     <Content Include="Views\Dialog\_SettingsDialog.cshtml" />
     <Content Include="Views\Dialog\_SettingsGeneral.cshtml" />
     <Content Include="Views\Dialog\_SettingsEmail.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Report\_ReportNoData.cshtml" />
+    <Content Include="Views\Report\_Report.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
