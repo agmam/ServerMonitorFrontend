@@ -8,6 +8,7 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
 {
     public class ServerGateway : IServiceGateway<Server>, IServerGateway
     {
+        public static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public Server Create(Server t)
         {
             var Server = WebApiService.instance.PostAsync<Server>("/api/Servers/PostServer", t, HttpContext.Current.User.Identity.Name).Result;
