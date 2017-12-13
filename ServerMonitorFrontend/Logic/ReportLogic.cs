@@ -42,7 +42,14 @@ namespace ServerMonitorFrontend.Logic
                 List<DateTime> dates = new List<DateTime>();
                 foreach (var e in events)
                 {
-                    if (dates.FirstOrDefault(x=>x.Day == e.Created.Day && x.Month == e.Created.Month && x.Year == e.Created.Year) != default(DateTime))
+                    if (dates.FirstOrDefault(x => x.Day == e.Created.Day && x.Month == e.Created.Month && x.Year == e.Created.Year) != default(DateTime))
+                    {
+                        //Find summary and add
+                        DailySummary summary = dailySummaries.FirstOrDefault(x => x.Day.Day == e.Created.Day && x.Day.Month == e.Created.Month && x.Day.Year == e.Created.Year);
+                        summary?.DailyEvents.Add(e);
+
+                    }
+                    else
                     {
                         dates.Add(e.Created);
                         DailySummary d = new DailySummary()
@@ -53,13 +60,7 @@ namespace ServerMonitorFrontend.Logic
                         d.DailyEvents.Add(e);
                         dailySummaries.Add(d);
                     }
-                    else
-                    {
-                        //Find summary and add
-                        DailySummary summary = dailySummaries.FirstOrDefault(x => x.Day == e.Created);
-                        summary?.DailyEvents.Add(e);
-                    }
-                    
+
                 }
 
                 rvm.DailySummaries = dailySummaries;

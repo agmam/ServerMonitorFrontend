@@ -5,6 +5,8 @@
 }
 
 <head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link href="~/Content/Site.css" rel="stylesheet" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
@@ -13,42 +15,43 @@
     <div class="container">
         <div class="row">
             <div id="report-outer-container">
-                <div class="col-md-12"><h1 class="report-title">Report summary</h1></div>
-                <div class="col-md-12">
-                    <div class="col-md-1"> <h5> Date: </h5></div>
-                    <div class="col-md-5">
-                        <div class="dropdown">
-                            <input id="datedropdown" class="btn dropdown-toggle" value="Last month" type="text" readonly>
-                            <div id="date-dropdown" class="dropdown-menu">
-                                <div class="row" id="datepicker-body">
-                                    <div class="col-md-4 my-datepicker">
-                                        <div id="datepickerFrom" type="text" name="from" value="@DateTime.Now.ToString("yyyy/MM/dd")"></div>
+                
+                <div class="container"><div class="col-md-12"><h1 class="report-title">Report summary</h1></div>
+                    <div class="col-md-12 padding-top-xl">
+                        <div class="col-md-1"> <h5> Date: </h5></div>
+                        <div class="col-md-5">
+                            <div class="dropdown">
+                                <input id="datedropdown" class="btn dropdown-toggle" value="Last month" type="text" readonly>
+                                <div id="date-dropdown" class="dropdown-menu">
+                                    <div class="row" id="datepicker-body">
+                                        <div class="col-md-4 my-datepicker">
+                                            <div id="datepickerFrom" type="text" name="from" value="@DateTime.Now.ToString("yyyy/MM/dd")"></div>
+                                        </div>
+                                        <div class="col-md-4 my-datepicker">
+                                            <div id="datepickerTo" type="text" name="to" value="@DateTime.Now.AddDays(-30).ToString("yyyy/MM/dd")"></div>
+                                        </div>
+                                        <div class="col-md-3 padding-0">
+                                            <ul class="default-date-range-list">
+                                                <li class="btn mybtn-default" id="oneDayBtn">Last 24 hours</li>
+                                                <li class="btn mybtn-default" id="oneWeekBtn">Last Week</li>
+                                                <li class="btn mybtn-default" id="oneMonthBtn">Last Month</li>
+                                                <li class="btn mybtn-default" id="oneYearBtn">Last Year</li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4 my-datepicker">
-                                        <div id="datepickerTo" type="text" name="to" value="@DateTime.Now.AddDays(-30).ToString("yyyy/MM/dd")"></div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="errorMessage"></p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3 padding-0">
-                                        <ul class="default-date-range-list">
-                                            <li class="btn mybtn-default" id="oneDayBtn">Last 24 hours</li>
-                                            <li class="btn mybtn-default" id="oneWeekBtn">Last Week</li>
-                                            <li class="btn mybtn-default" id="oneMonthBtn">Last Month</li>
-                                            <li class="btn mybtn-default" id="oneYearBtn">Last Year</li>
-                                        </ul>
+                                    <div class="modal-footer">
+                                        <a class="mybtn mybtn-default" id="saveDateChooseBtn">Confirm</a>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p id="errorMessage"></p>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <a class="mybtn mybtn-default" id="saveDateChooseBtn">Confirm</a>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-3 pull-right" style="text-align: center"><div class="btn mybtn-success" id="runReportBtn">Run report</div></div>
                     </div>
-                    <div class="col-md-3"><div class="btn mybtn-success" id="runReportBtn">Run report</div></div>
-                    <div class="col-md-3"><div class="btn mybtn-default pull-right" id="sendMailBtn" disabled>Send as email</div></div>
                 </div>
                 <div id="report-container">
                     <p style="text-align: center;">Choose the period that you want a report for.</p>

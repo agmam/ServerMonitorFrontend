@@ -154,11 +154,13 @@ font-weight:bold;
     text-align: center;
 }
 
+.padding-top-xl {
+    padding-top: 20px;
+}
 
 
 #report-container{
        margin: 36px;
-    margin-top: 60px;
     padding: 30px;
     padding-top: 35px;
     background: #dbdbdf;
@@ -170,11 +172,9 @@ box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
         background: #fff;
     border-radius: 2px;
     box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.31);
-        display: block;
+    display: block;
     padding: 15px;
-    margin: 15px;
-    width:100vh;
-    height:90vh;
+    height: 90vh;
 }
 
 #ui-datepicker-div {

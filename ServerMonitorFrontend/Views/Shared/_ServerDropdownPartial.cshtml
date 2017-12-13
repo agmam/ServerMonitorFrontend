@@ -1,0 +1,5 @@
+﻿@model IEnumerable<Entities.Entities.Server>
+
+@Html.DropDownList("server-dropdown",
+                     new SelectList(Model, "Id", "ServerName", 0),
+                     new { @class = "myDropdownServers pull-right" })
