@@ -238,6 +238,7 @@
     <Compile Include="Controllers\EmailRecipientsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Filters\HandleApiErrorAttribute.cs" />
     <Compile Include="Gateways\IEventGateway.cs" />
@@ -365,6 +366,7 @@
     <Content Include="Views\Report\_ReportNoData.cshtml" />
     <Content Include="Views\Report\_Report.cshtml" />
     <Content Include="Views\Shared\_ServerDropdownPartial.cshtml" />
+    <Content Include="Views\Server\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
