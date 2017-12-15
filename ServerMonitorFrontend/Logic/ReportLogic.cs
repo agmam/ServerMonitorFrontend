@@ -24,6 +24,7 @@ namespace ServerMonitorFrontend.Logic
             ReportViewModel rvm = new ReportViewModel();
             try
             {
+                rvm.Servers = serverGateway.ReadAll();
                 Server s = serverGateway.Read(serverId);
                 //tjek om to date er i dag. i så fald plus en dag så alt data fra i dag kommer med(ellers tager den fra 00:00)
                 if (to.Date == DateTime.Today)

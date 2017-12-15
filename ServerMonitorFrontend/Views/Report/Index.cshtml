@@ -1,4 +1,5 @@
-﻿
+﻿@using Entities.Entities
+@model ServerMonitorFrontend.Models.ReportViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -15,11 +16,11 @@
     <div class="container">
         <div class="row">
             <div id="report-outer-container">
-                
-                <div class="container"><div class="col-md-12"><h1 class="report-title">Report summary</h1></div>
+                <div class="container">
+                    <div class="col-md-12"><h1 class="report-title">Report summary</h1></div>
                     <div class="col-md-12 padding-top-xl">
-                        <div class="col-md-1"> <h5> Date: </h5></div>
-                        <div class="col-md-5">
+                        <div class="col-md-1"> <h4> Date: </h4></div>
+                        <div class="col-md-3">
                             <div class="dropdown">
                                 <input id="datedropdown" class="btn dropdown-toggle" value="Last month" type="text" readonly>
                                 <div id="date-dropdown" class="dropdown-menu">
@@ -35,7 +36,6 @@
                                                 <li class="btn mybtn-default" id="oneDayBtn">Last 24 hours</li>
                                                 <li class="btn mybtn-default" id="oneWeekBtn">Last Week</li>
                                                 <li class="btn mybtn-default" id="oneMonthBtn">Last Month</li>
-                                                <li class="btn mybtn-default" id="oneYearBtn">Last Year</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -50,8 +50,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 pull-right" style="text-align: center"><div class="btn mybtn-success" id="runReportBtn">Run report</div></div>
-                    </div>
+                        <div class="col-md-1" style="padding-left: 50px;"><h4> Server: </h4></div>
+                            <div class="col-md-3">
+                               
+                                @Html.DropDownList("server-dropdown",
+                                new SelectList(Model.Servers ?? new List<Server>(), "Id", "ServerName", 0),
+                                new
+                                {
+                                    @class = "myDropdownServers pull-right",
+                                    @onchange = "console.log('change'); $('#runReportBtn').removeAttr('disabled');"
+                                })
+                            </div>
+                            <div class="col-md-2 pull-right" style="text-align: center"><div class="btn mybtn-default" id="runReportBtn">Run report</div></div>
+                        </div>
                 </div>
                 <div id="report-container">
                     <p style="text-align: center;">Choose the period that you want a report for.</p>
@@ -114,9 +125,6 @@
             $("#oneMonthBtn").click(function () {
                 defaultDateChoosen(30);
             });
-            $("#oneYearBtn").click(function () {
-                defaultDateChoosen(365);
-            });
 
             function defaultDateChoosen(days) {
                 var fromString = moment().add(-days, 'days').format('YYYY/MM/DD');
@@ -162,46 +170,31 @@
 
             });
 
-            $("#sendMailBtn").click(function () {
-                if (error == null) {
-                    $("#sendMailBtn").attr("disabled", "disabled");
-                    CloseDropDownIfOpen();
-                    $.ajax({
-                        url: '/Report/SendMail',
-                        // data: { model: },
-                        type: "POST",
-                        success: function (data) {
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            console.log('error');
-                        }
-                    });
-                }
-            });
+
 
             //check if dropdown is open -> then close it
-            function CloseDropDownIfOpen()
+            function closeDropDownIfOpen()
             {
                 if ($('.dropdown').hasClass('open')) {
                     $('.dropdown').toggleClass('open');
                 }
-            }
-
-
+            };
+          
             $("#runReportBtn").click(function () {
-                console.log(error); 
+                console.log(error);
                 if (error == null) {
                     if ($('#datedropdown').val() == "Last month") {
                         defaultDateChoosen(30);
                     };
 
-                    CloseDropDownIfOpen();
+                    closeDropDownIfOpen();
                     $("#runReportBtn").attr('disabled', 'disabled');
 
                     var from = $("#datepickerFrom").val();
                     var to = $("#datepickerTo").val();
 
 
+                    var serverId = $('#server-dropdown').val();
 
 
                     $('#report-container').html('<div class="loader" id="reportLoader"></div>');;
@@ -209,7 +202,7 @@
                     //defaultDateChoosen
                     $.ajax({
                         url: '/Report/GenerateReport/',
-                        data: { from: from, to: to },
+                        data: { from: from, to: to, serverId: serverId },
                         type: "POST",
                         success: function (data) {
 
@@ -225,7 +218,7 @@
                 }
             });
 
-
+         
 
             $('body').on('click', function (e) {
                 if (!$('#date-dropdown').is(e.target)
@@ -241,4 +234,3 @@
         });
     </script>
 }
-

@@ -17,6 +17,7 @@ namespace ServerMonitorFrontend.Models
         public double AverageResponseTime { get; set; }
         public double AverageCpuUtilization { get; set; }
         public List<DailySummary> DailySummaries { get; set; }
+        public List<Server> Servers { get; set; }
 
         
     }
