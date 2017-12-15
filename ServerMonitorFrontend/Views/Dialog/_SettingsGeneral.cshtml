@@ -1,8 +1,9 @@
 ﻿@using Entities.Entities
 @model ServerMonitorFrontend.Models.SettingsModel
 
+
 <div class="yscroll-container">
-    
+
     @{
 
 
@@ -37,14 +38,14 @@
                 <div>
                     <p><b>@eventType.Name</b></p>
                 </div>
-                @if (eventType.Name != "ServerUp") //server down/up have no peak value
+                @if (eventType.Name != "Server down") //For the server down there will be no peak value
                 {
                     <div class="peakvalue-div">
                         <p>Peak value</p>
                         @Html.TextBoxFor(m => m.EventTypes[i].PeakValue, eventType.PeakValue.ToString(),
- new { @class = "form-control", id = "editPeakValue", type = "number", @min = "1", @max = "100" })
+                            new { @class = "form-control", id = "editPeakValue", type = "number", @min = "1", @max = "100" })
                         @Html.ValidationMessageFor(m => m.EventTypes[i].PeakValue, "Please enter a valid interval",
- new { @class = "text-danger" })
+                            new { @class = "text-danger" })
                         <p id="postfix">@postfix</p>
                     </div>
                 }
