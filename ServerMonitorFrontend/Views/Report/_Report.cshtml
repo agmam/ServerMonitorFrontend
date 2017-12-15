@@ -22,21 +22,20 @@
                 {
                     <div class="row">
                         <div class="col-md-12 no-padding">
-                            <p class="bold pull-left">@dailySummary.Day</p>
+                            <p class="bold pull-left">@dailySummary.Day.Date.ToShortDateString()</p>
                             <p class="bold pull-right">Total events: @dailySummary.DailyEvents.Count</p>
                         </div>
                     </div>
 
 
-                    <p style="font-weight: bold">Events:</p>
-                    foreach (var e in dailySummary.DailyEvents)
+                    <p style="font-weight: bold">Events:</p>foreach (var e in dailySummary.DailyEvents)
                     {
                         EventType eventType = new EventType();
 
                         if (eventType.setName(EventType.Type.LowDiskSpace) == e.EventType.Name)
                         {
                             <p>Type: @e.EventType.Name </p>
-                            <p>Disk space left: @Math.Round((e.ServerDetailAverage.HarddiskTotalSpace-e.ServerDetailAverage.HarddiskUsedSpace),0) GB</p>
+                            <p>Disk space left: @Math.Round((e.ServerDetailAverage.HarddiskTotalSpace - e.ServerDetailAverage.HarddiskUsedSpace), 0) GB</p>
                         }
                         else if (eventType.setName(EventType.Type.HighCpuTemperature) == e.EventType.Name)
                         {
@@ -46,12 +45,22 @@
                         else if (eventType.setName(EventType.Type.LowMemory) == e.EventType.Name)
                         {
                             <p>Type: @e.EventType.Name </p>
-                            <p>RAM left: @Math.Round((e.ServerDetailAverage.RAMTotal-e.ServerDetailAverage.RAMAvailable),0) GB</p>
+                            <p>RAM left: @Math.Round((e.ServerDetailAverage.RAMTotal - e.ServerDetailAverage.RAMAvailable), 0) GB</p>
                         }
                         else if (eventType.setName(EventType.Type.Highcpu) == e.EventType.Name)
                         {
                             <p>Type: @e.EventType.Name </p>
                             <p>Value: @e.ServerDetailAverage.CPUUtilization %</p>
+                        }
+                        else if (eventType.setName(EventType.Type.HighNetworkUtilization) == e.EventType.Name)
+                        {
+                            <p>Type: @e.EventType.Name </p>
+                            <p>Value: @e.ServerDetailAverage.NetworkUtilization %</p>
+                        }
+                        else if (eventType.setName(EventType.Type.ServerDown) == e.EventType.Name)
+                        {
+                            <p>Type: @e.EventType.Name </p>
+                            <p>Time: @e.ServerDetailAverage.Created</p>
                         }
                     }
 
@@ -65,6 +74,7 @@
         }
 
     </div>
+
     <hr />
 </div>
 <script>

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Entities.Entities.Server>
+<br/>
+<h3>Servers</h3>
+<hr/>
+<table id="serverTable" class="table table-bordered table table-hover table-responsive">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Created)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServerName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Created)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ServerName)
+        </td>
+        <td>
+            <a id="serverRemoveBtn"class="btn btn-danger" onclick="DeleteServer(@item.Id)"><span class="glyphicon glyphicon-remove"></span></a>
+        </td>
+    </tr>
+
+}
+
+</table>
+<script>
+    function DeleteServer(id) {
+       
+        $.ajax({
+            url: '@Url.Action("DeleteServer", "Server")',
+            data: {id: id},
+        type: 'GET',
+        dataType   : 'json',
+        contentType: 'application/json; charset=UTF-8',
+        success: function (data) {
+              console.log("succes");
+          
+        },
+        error: function (error) {
+            console.log('Error: ' + JSON.stringify(error));
+        }
+    });
+    }
+</script>
