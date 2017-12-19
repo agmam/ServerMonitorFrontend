@@ -251,7 +251,6 @@
     <Compile Include="Models\HomeIndexViewModel.cs" />
     <Compile Include="Models\JsonBadRequest.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Gateways\AServiceGateway.cs" />
     <Compile Include="Gateways\IServiceGateway.cs" />
     <Compile Include="Gateways\SecureGateways\EmailRecipientGateway.cs" />
     <Compile Include="Gateways\SecureGateways\EventGateway.cs" />
