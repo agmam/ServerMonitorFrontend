@@ -11,7 +11,8 @@ namespace ServerMonitorFrontend.Gateways.SecureGateways
 
         public ServerDetail Create(ServerDetail t)
         {
-            var ServerDetail = WebApiService.instance.PostAsync<ServerDetail>("/api/ServerDetails/PostServerDetail", t, HttpContext.Current.User.Identity.Name).Result;
+            var ServerDetail = WebApiService.instance.PostAsync<ServerDetail>
+                ("/api/ServerDetails/PostServerDetail", t, HttpContext.Current.User.Identity.Name).Result;
             return ServerDetail;
         }
 

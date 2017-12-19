@@ -253,7 +253,6 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Gateways\AServiceGateway.cs" />
     <Compile Include="Gateways\IServiceGateway.cs" />
-    <Compile Include="Gateways\LoginGateway.cs" />
     <Compile Include="Gateways\SecureGateways\EmailRecipientGateway.cs" />
     <Compile Include="Gateways\SecureGateways\EventGateway.cs" />
     <Compile Include="Gateways\SecureGateways\EventTypeGateway.cs" />
