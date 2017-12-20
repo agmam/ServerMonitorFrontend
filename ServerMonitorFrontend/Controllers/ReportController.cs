@@ -10,6 +10,7 @@ namespace ServerMonitorFrontend.Controllers
 {
     public class ReportController : Controller
     {
+        [Authorize]
         // GET: Report
         public ActionResult Index()
         {
@@ -19,6 +20,7 @@ namespace ServerMonitorFrontend.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult GenerateReport(DateTime from, DateTime to, int serverId)
         {
         

@@ -24,12 +24,14 @@ namespace ServerMonitorFrontend.Controllers
             new BLLFacade().GetServerGateway();
         private readonly IServiceGateway<Event> eventGateway =
             new BLLFacade().GetEventGateway();
+        [Authorize]
         public ActionResult Index(int id = 1)
         {
             var model = GenerateViewModel(id);
             return View(model);
         }
 
+        [Authorize]
         private HomeIndexViewModel GenerateViewModel(int id)
         {
             var serverLogic = new ServerLogic();
@@ -59,20 +61,7 @@ namespace ServerMonitorFrontend.Controllers
             return model;
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-            var isauth = User.Identity.IsAuthenticated;
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
+        [Authorize]
         [HttpGet]
         [Route("home/GetServerModel/{serverId}")]
         public ActionResult GetServerModel(int serverId)
@@ -80,6 +69,7 @@ namespace ServerMonitorFrontend.Controllers
             return Json(GenerateViewModel(serverId), JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("home/GetEventPartialView/{serverId}")]
         public ActionResult GetEventPartialView(int serverId)

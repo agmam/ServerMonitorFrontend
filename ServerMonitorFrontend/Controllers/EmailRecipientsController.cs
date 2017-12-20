@@ -13,6 +13,7 @@ namespace ServerMonitorFrontend.Controllers
     {
         private readonly IServiceGateway<EmailRecipient> emailRecipientGateway =
             new BLLFacade().GetEmailRecipientGateway();
+        [Authorize]
         [HttpPost]
         public void AddEmailRecipent(string Email)
         {
@@ -27,7 +28,7 @@ namespace ServerMonitorFrontend.Controllers
                 }
             }
         }
-
+        [Authorize]
         public ActionResult GetEmailSettingView()
         {
             var model = new SettingsModel
@@ -36,14 +37,14 @@ namespace ServerMonitorFrontend.Controllers
             };
             return PartialView("~/Views/Dialog/_SettingsEmail.cshtml", model);
         }
-
+        [Authorize]
         public void EditEmail(int id, string email)
         {
             var recipent = new EmailRecipient {Id = id, Email = email};
             emailRecipientGateway.Update(recipent);
             
         }
-
+        [Authorize]
         public string DeleteEmail(int id)
         {
             var email = emailRecipientGateway.Read(id);

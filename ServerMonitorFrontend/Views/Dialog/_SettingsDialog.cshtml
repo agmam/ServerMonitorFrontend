@@ -34,7 +34,8 @@
     <a class="mybtn mybtn-default" id="cancelSettingBtn"><i class="glyphicon glyphicon-remove"></i> Close</a>
     <a class="mybtn mybtn-default" id="saveSettingsBtn"><i class="glyphicon glyphicon-floppy-disk"></i> Save</a>
 </div>
-<script>
+@section Scripts{
+    <script>
     window.onclick = function (event) {
         var modal = $('#myModal');
         if (event.target == modal) {
@@ -62,6 +63,8 @@
         $('#SettingsForm').submit();
     });
 </script>
+}
+
 
 
 

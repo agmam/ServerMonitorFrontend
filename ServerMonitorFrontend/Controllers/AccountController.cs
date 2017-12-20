@@ -127,42 +127,42 @@ namespace ServerMonitorFrontend.Controllers
       
         //
         // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return View();
-        }
+        //[AllowAnonymous]
+        //public ActionResult Register()
+        //{
+        //    return View();
+        //}
 
         //
         // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Register(RegisterViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
 
-            try
-            {
-                await WebApiService.instance.PostAsync("/api/Account/Register", model);
-                return View(model);
-            }
-            catch (ApiException ex)
-            {
-                //No 200 OK result, what went wrong?
-                HandleBadRequest(ex);
+        //    try
+        //    {
+        //        await WebApiService.instance.PostAsync("/api/Account/Register", model);
+        //        return View(model);
+        //    }
+        //    catch (ApiException ex)
+        //    {
+        //        //No 200 OK result, what went wrong?
+        //        HandleBadRequest(ex);
 
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return View(model);
+        //        }
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
         //
         // POST: /Account/LogOff

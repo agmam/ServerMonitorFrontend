@@ -47,28 +47,29 @@
 </div>
 
 
+@section Scripts{
+
+    <script>
+        //Get the server from the dropdown, so we know what to display for
+        var serverToDisplay = $('#server-dropdown').val();
 
 
-<script>
-    //Get the server from the dropdown, so we know what to display for
-    var serverToDisplay = $('#server-dropdown').val();
+        //colors
+        var color = Chart.helpers.color;
+        //font family
+        Chart.defaults.global.defaultFontFamily = "Tahoma";
 
+        //Get the canvas
+        var ctxCpu = document.getElementById("canvas-cpu-graph").getContext("2d");
+        var ctxNetwork = document.getElementById("canvas-network-graph").getContext("2d");
 
-    //colors
-    var color = Chart.helpers.color;
-    //font family
-    Chart.defaults.global.defaultFontFamily = "Tahoma";
+        //Configuration for CPU graph
+        var configCpu = {
+            type: 'line',
 
-    //Get the canvas
-    var ctxCpu = document.getElementById("canvas-cpu-graph").getContext("2d");
-    var ctxNetwork = document.getElementById("canvas-network-graph").getContext("2d");
-
-    //Configuration for CPU graph
-    var configCpu = {
-        type: 'line',
-       
-        data: {
-                datasets: [{
+            data: {
+                datasets: [
+                {
                     lineTension: 0,
                     label: "CPU Utilization %",
                     backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
@@ -81,443 +82,475 @@
                     label: "Temperature °C",
                     backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
                     data: @Html.JsonInsert(Model.GraphDatasTemperature),
+                        fill: false,
+                        yAxisID: "y-axis-1",
+                        borderColor: window.chartColors.red
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: "CPU Utilization/Temperature",
+                    fontSize: 16
+                },
+                scales: {
+                    xAxes: [
+                        {
+                            type: "time",
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Time',
+                                fontSize: 14
+
+                            },
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 45,
+                                minRotation: 45,
+                                fontSize: 14
+                            },
+                            unit: 'hour',
+                            unitStepSize: 1,
+                            time: {
+                                displayFormats: {
+                                    'millisecond': 'HH:mm',
+                                    'second': 'HH:mm',
+                                    'minute': 'HH:mm',
+                                    'hour': 'HH:mm',
+                                    'day': 'HH:mm',
+                                    'week': 'HH:mm',
+                                    'month': 'HH:mm',
+                                    'quarter': 'HH:mm',
+                                    'year': 'HH:mm'
+                                }
+                            }
+                        }
+                    ],
+                    yAxes: [
+                        {
+                            position: "left",
+                            id: "y-axis-0",
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: '% utilization',
+                                fontSize: 14
+
+                            },
+                            ticks: {
+                                fontSize: 14
+                            }
+                        }, {
+                            position: "right",
+                            id: "y-axis-1",
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Temperature',
+                                fontSize: 14
+
+                            },
+                            ticks: {
+                                fontSize: 14
+                            }
+                        }
+                    ]
+                },
+                legend: {
+                    display: true
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            if (tooltipItem.datasetIndex === 0) {
+                                return Math.round(data.datasets[0].data[tooltipItem.index].y) + "%";
+                            } else {
+                                return Math.round(data.datasets[1].data[tooltipItem.index].y) + '°C';
+                            }
+                        },
+                        title: function(tooltipItems, data) {
+                            var tooltipItem = tooltipItems[0];
+                            var time = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].x;
+
+                            return 'Time: ' + moment(time).format('HH:mm');;
+                        }
+                    }
+                }
+            }
+        }
+        window.CpuChart = new Chart(ctxCpu, configCpu);
+
+
+        //configuration network start
+        var configNetwork = {
+            type: 'line',
+            data: {
+                datasets: [
+                {
+                    lineTension: 0,
+                    label: "Network Utilization in percentage",
+                    backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.red,
                     fill: false,
-                    yAxisID: "y-axis-1",
-                    borderColor: window.chartColors.red
-            }]
-        },
-        options: {
-            responsive: true,
-            title: {
-                display: true,
-                text: "CPU Utilization/Temperature",
-                fontSize: 16
+                    data: @Html.JsonInsert(Model.GraphDatasNetwork)
+                    }
+                ]
             },
-            scales: {
-                xAxes: [{
-                    type: "time",
+            options: {
+                responsive: true,
+                title: {
                     display: true,
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Time',
-                        fontSize: 14
+                    text: "Network Utilization",
+                    fontSize: 16
+                },
+                scales: {
+                    xAxes: [
+                        {
+                            type: "time",
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Time',
+                                fontSize: 14
 
-                    },
-                    ticks: {
-                        autoSkip: false,
-                        maxRotation: 45,
-                        minRotation: 45,
-                        fontSize: 14
-                    },
-                    unit: 'hour',
-                    unitStepSize: 1,
-                    time: {
-                        displayFormats: {
-                            'millisecond': 'HH:mm',
-                            'second': 'HH:mm',
-                            'minute': 'HH:mm',
-                            'hour': 'HH:mm',
-                            'day': 'HH:mm',
-                            'week': 'HH:mm',
-                            'month': 'HH:mm',
-                            'quarter': 'HH:mm',
-                            'year': 'HH:mm'
+                            },
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 45,
+                                minRotation: 45,
+                                fontSize: 14
+                            },
+                            unit: 'hour',
+                            unitStepSize: 1,
+                            time: {
+                                displayFormats: {
+                                    'millisecond': 'HH:mm',
+                                    'second': 'HH:mm',
+                                    'minute': 'HH:mm',
+                                    'hour': 'HH:mm',
+                                    'day': 'HH:mm',
+                                    'week': 'HH:mm',
+                                    'month': 'HH:mm',
+                                    'quarter': 'HH:mm',
+                                    'year': 'HH:mm'
+                                }
+                            }
                         }
-                    }
-                }],
-                yAxes: [{
-                    position: "left",
-                    id: "y-axis-0",
-                    display: true,
-                    scaleLabel: {
-                        display: true,
-                        labelString: '% utilization',
-                        fontSize: 14
+                    ],
+                    yAxes: [
+                        {
+                            position: "left",
+                            id: "y-axis-0",
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: '% utilization',
+                                fontSize: 14
 
-                    },
-                    ticks: {
-                        fontSize: 14
-                    }
-                },{
-                    position: "right",
-                    id: "y-axis-1",
-                    display: true,
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Temperature',
-                        fontSize: 14
-
-                    },
-                    ticks: {
-                        fontSize: 14
-                    }
-                }]
-            },
-            legend:{
-                display: true
-            },
-            tooltips: {
-                callbacks: {
-                    label: function(tooltipItem, data) {
-                        if (tooltipItem.datasetIndex === 0) {
-                            return Math.round(data.datasets[0].data[tooltipItem.index].y) + "%";
-                        } else {
-                            return Math.round(data.datasets[1].data[tooltipItem.index].y) + '°C';
+                            },
+                            ticks: {
+                                fontSize: 14
+                            }
                         }
-                    },
-                    title: function(tooltipItems, data) {
-                        var tooltipItem = tooltipItems[0];
-                        var time = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].x;
+                    ]
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var util = data.datasets[0].data[tooltipItem.index].y;
+                            var rounded = Math.round(util * 10) / 10;
+                            return "Network utilization " + rounded;
+                        },
+                        title: function(tooltipItems, data) {
+                            var tooltipItem = tooltipItems[0];
+                            var time = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].x;
 
-                        return 'Time: ' + moment(time).format('HH:mm');;
+                            return 'Time: ' + moment(time).format('HH:mm');;
+                        }
                     }
                 }
             }
         }
-    }
-    window.CpuChart = new Chart(ctxCpu, configCpu);
+        window.NetworkChart = new Chart(ctxNetwork, configNetwork);
 
+        // Gauge start
 
-    //configuration network start
-    var configNetwork = {
-        type: 'line',
-        data: {
-            datasets: [{
-                lineTension:0,
-                label: "Network Utilization in percentage",
-                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-                borderColor: window.chartColors.red,
-                fill: false,
-                data: @Html.JsonInsert(Model.GraphDatasNetwork)
-                }]
-        },
-        options: {
-            responsive: true,
-            title: {
-                display: true,
-                text: "Network Utilization",
-                fontSize: 16
-            },
-            scales: {
-                xAxes: [{
-                    type: "time",
-                    display: true,
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Time',
-                        fontSize: 14
+        jQuery.fn.gauge = function(opts) {
+            this.each(function() {
+                var $this = $(this),
+                    data = $this.data();
 
-                    },
-                    ticks: {
-                        autoSkip: false,
-                        maxRotation: 45,
-                        minRotation: 45,
-                        fontSize: 14
-                    },
-                    unit: 'hour',
-                    unitStepSize: 1,
-                    time: {
-                        displayFormats: {
-                           
-                            'millisecond': 'HH:mm',
-                            'second': 'HH:mm',
-                            'minute': 'HH:mm',
-                            'hour': 'HH:mm',
-                            'day': 'HH:mm',
-                            'week': 'HH:mm',
-                            'month': 'HH:mm',
-                            'quarter': 'HH:mm',
-                            'year': 'HH:mm'
-                        }
-                    }
-                }],
-                yAxes: [{
-                    position: "left",
-                    id: "y-axis-0",
-                    display: true,
-                    scaleLabel: {
-                        display: true,
-                        labelString: '% utilization',
-                        fontSize: 14
-
-                    },
-                    ticks: {
-                        fontSize: 14
-                    }
-                }]
-            },
-            legend:{
-                display: false
-            },
-            tooltips: {
-                callbacks: {
-                    label: function(tooltipItem, data) {
-                        var util = data.datasets[0].data[tooltipItem.index].y;
-                        var rounded = Math.round(util*10)/10;
-                        return "Network utilization " + rounded;
-                    },
-                    title: function(tooltipItems, data) {
-                        var tooltipItem = tooltipItems[0];
-                        var time = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].x;
-
-                        return 'Time: ' + moment(time).format('HH:mm');;
-                    }
+                if (data.gauge) {
+                    data.gauge.stop();
+                    delete data.gauge;
                 }
-            }
+                if (opts !== false) {
+                    data.gauge = new Gauge(this).setOptions(opts);
+                }
+            });
+            return this;
+        };
+        var opts = {
+            angle: -0.18, // The span of the gauge arc
+            lineWidth: 0.18, // The line thickness
+            radiusScale: 0.46, // Relative radius
+            pointer: {
+                length: 0.6, // // Relative to gauge radius
+                strokeWidth: 0.045, // The thickness
+                color: '#333' // Fill color
+
+            },
+            limitMax: false, // If false, max value increases automatically if value > maxValue
+            limitMin: true, // If true, the min value of the gauge will be fixed
+            colorStart: '#6F6EA0', // Colors
+            colorStop: '#C0C0DB', // just experiment with them
+            strokeColor: '#333', // to see which ones work best for you
+            generateGradient: true,
+            highDpiSupport: true, // High resolution support
+            staticZones: [
+                { strokeStyle: "#F03E3E", min: 90, max: 100 }, // Red from 90 to 100
+                { strokeStyle: "#FFDD00", min: 69, max: 90 }, // Yellow
+                { strokeStyle: "#30B32D", min: 0, max: 69 }, // Green
+            ],
+            staticLabels: {
+                font: "14px sans-serif", // Specifies font
+                labels: [10, 20, 30, 40, 50, 60, 70, 80, 90], // Print labels at these values
+                color: "#000000", // Optional: Label text color
+                fractionDigits: 0 // Optional: Numerical precision. 0=round off.
+            },
+        };
+        var targetcpu = document.getElementById('canvas-cpu-gauge');
+        var target = document.getElementById('canvas-Temp-gauge'); // your canvas element
+
+        var gaugecpu = new Gauge(targetcpu).setOptions(opts); // create sexy gauge!
+        var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+        gauge.maxValue = 100; // set max gauge value
+        gauge.setMinValue(0); // Prefer setter over gauge.minValue = 0
+        gauge.animationSpeed = 44; // set animation speed (32 is default value)
+        gauge.set(@Html.JsonInsert(Model.ServerModel.CurrentTemperature)); // set actual value
+        gaugecpu.maxValue = 100; // set max gauge value
+        gaugecpu.setMinValue(0); // Prefer setter over gauge.minValue = 0
+        gaugecpu.animationSpeed = 44; // set animation speed (32 is default value)
+        gaugecpu.set(@Html.JsonInsert(Model.GraphDatasCpu.FindLast(x => x.y != -1).y)); // set actual value
+
+
+        function h() {
+            gauge.set(@Html.JsonInsert(Model.ServerModel.CurrentTemperature));
+            gaugecpu.set(@Html.JsonInsert(Model.GraphDatasCpu.FindLast(x => x.y != -1).y));
         }
-    }
-    window.NetworkChart = new Chart(ctxNetwork, configNetwork);
 
-    // Gauge start
-
-    jQuery.fn.gauge = function(opts) {
-        this.each(function() {
-            var $this = $(this),
-                data = $this.data();
-
-            if (data.gauge) {
-                data.gauge.stop();
-                delete data.gauge;
-            }
-            if (opts !== false) {
-                data.gauge = new Gauge(this).setOptions(opts);
-            }
-        });
-        return this;
-    };
-    var opts = {
-        angle: -0.18, // The span of the gauge arc
-        lineWidth: 0.18, // The line thickness
-        radiusScale: 0.46, // Relative radius
-        pointer: {
-            length: 0.6, // // Relative to gauge radius
-            strokeWidth: 0.045, // The thickness
-            color: '#333' // Fill color
-            
-        },
-        limitMax: false,     // If false, max value increases automatically if value > maxValue
-        limitMin: true,     // If true, the min value of the gauge will be fixed
-        colorStart: '#6F6EA0',   // Colors
-        colorStop: '#C0C0DB',    // just experiment with them
-        strokeColor: '#333',  // to see which ones work best for you
-        generateGradient: true,
-        highDpiSupport: true,     // High resolution support
-        staticZones: [
-            {strokeStyle: "#F03E3E", min: 90, max: 100}, // Red from 90 to 100
-            {strokeStyle: "#FFDD00", min: 69, max: 90}, // Yellow
-            {strokeStyle: "#30B32D", min: 0, max: 69}, // Green
-        ],staticLabels: {
-            font: "14px sans-serif",  // Specifies font
-            labels: [10, 20, 30, 40, 50, 60, 70, 80, 90],  // Print labels at these values
-            color: "#000000",  // Optional: Label text color
-            fractionDigits: 0  // Optional: Numerical precision. 0=round off.
-        },
-    };
-    var targetcpu =  document.getElementById('canvas-cpu-gauge');
-    var target = document.getElementById('canvas-Temp-gauge'); // your canvas element
-    
-    var gaugecpu = new Gauge(targetcpu).setOptions(opts); // create sexy gauge!
-    var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
-    gauge.maxValue = 100; // set max gauge value
-    gauge.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-    gauge.animationSpeed = 44; // set animation speed (32 is default value)
-    gauge.set(@Html.JsonInsert(Model.ServerModel.CurrentTemperature)); // set actual value
-    gaugecpu.maxValue = 100; // set max gauge value
-    gaugecpu.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-    gaugecpu.animationSpeed = 44; // set animation speed (32 is default value)
-    gaugecpu.set(@Html.JsonInsert(Model.GraphDatasCpu.FindLast(x =>x.y != -1).y)); // set actual value
-    
-
-    function h() {
-        gauge.set(@Html.JsonInsert(Model.ServerModel.CurrentTemperature));
-        gaugecpu.set(@Html.JsonInsert(Model.GraphDatasCpu.FindLast(x =>x.y != -1).y));
-    }
-
-    h();
-    UpdateServerData();
-    $("#server-dropdown").change(function() {
-       
-        serverToDisplay = this.options[this.selectedIndex].value;
-       
+        h();
         UpdateServerData();
-    });
+        $("#server-dropdown")
+            .change(function() {
 
-    function UpdateServerData() {
-        $.ajax({
-            url: "/Home/GetServerModel?serverId=" + serverToDisplay,
-            type: 'GET',
-            dataType   : 'json',
-            contentType: 'application/json; charset=UTF-8',
-            success: function (data) {
-              
-                $('#eventContainer').load("/Home/GetEventPartialView?serverId="+ serverToDisplay);
-                if (data.ServerModel.ServerUp === false) {
-                    //LED GREEN
-                    $(".led-green").addClass("led-red").removeClass("led-green");
-                   
+                serverToDisplay = this.options[this.selectedIndex].value;
 
-                    //SERVER INFORMATION
-                    $('#UpDownTime').html("Down time");
-                    $('#currentProcesses').hide();
-                    $('#dataReceivedDate').hide();
-                    $('#currentThreads').hide();
-                    $('#currentHandles').hide();
+                UpdateServerData();
+            });
 
-                    //RAM DIAGRAM
-                    $('#ram-available').css("display", "none");
-                    $('#ram-unavailable').css("display", "block").css("font-size", "11px");
-                    $('#ram-total-text').css("display", "block");
-                    $('#ram-available-text').css("display", "block");
+        function UpdateServerData() {
+            $.ajax({
+                url: "/Home/GetServerModel?serverId=" + serverToDisplay,
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+                success: function(data) {
 
-                    //TEmperature
-                    $('#temperature-available').css("display", "none");
-                    $('#temperature-unavailable').css("display", "block").css("font-size", "11px");
-                    
-
-                    $('#dataReceivedDate').html(moment(data.ServerModel.DataReceived).format('DD/MM - HH:mm'));
+                    $('#eventContainer').load("/Home/GetEventPartialView?serverId=" + serverToDisplay);
+                    if (data.ServerModel.ServerUp === false) {
+                        //LED GREEN
+                        $(".led-green").addClass("led-red").removeClass("led-green");
 
 
-                } else {
-                    //RAM DIAGRAM
-                    $('#ram-available').css("display", "block");
-                    $('#ram-unavailable').css("display", "none");
-                    $('#ram-unavailable-text').html('Used: '+ ConvertToGbFormat(GetUsedRAM(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable))
-                        + ' (' + PercentUnavailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable) + '%)');
-                    $('#ram-available-text').html('Free: '+ ConvertToGbFormat(data.ServerModel.RAMAvailable)
-                    + ' (' + PercentAvailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable) + '%)');
+                        //SERVER INFORMATION
+                        $('#UpDownTime').html("Down time");
+                        $('#currentProcesses').hide();
+                        $('#dataReceivedDate').hide();
+                        $('#currentThreads').hide();
+                        $('#currentHandles').hide();
 
-                    //TEmperature
-                    $('#temperature-available').css("display", "block");
-                    $('#temperature-unavailable').css("display", "none");  
+                        //RAM DIAGRAM
+                        $('#ram-available').css("display", "none");
+                        $('#ram-unavailable').css("display", "block").css("font-size", "11px");
+                        $('#ram-total-text').css("display", "block");
+                        $('#ram-available-text').css("display", "block");
+
+                        //TEmperature
+                        $('#temperature-available').css("display", "none");
+                        $('#temperature-unavailable').css("display", "block").css("font-size", "11px");
 
 
-                    //LED RED
-                    $('.led-red').addClass("led-green").removeClass("led-red");
+                        $('#dataReceivedDate').html(moment(data.ServerModel.DataReceived).format('DD/MM - HH:mm'));
 
-                    $('#UpDownTime').html("Up time");
-                    $('#currentProcesses').show();
-                    $('#dataReceivedDate').show();
-                    $('#currentThreads').show();
-                    $('#currentThreads').html(data.ServerModel.Threads);
-                    $('#currentHandles').show();
-                    $('#currentHandles').html(data.ServerModel.Handles);
-                    $('#upTime').html(data.ServerModel.UpTime);
-                    $('#currentProcesses').html(data.ServerModel.Processes);
-                    $('#dataReceivedDate').html(moment(data.ServerModel.DataReceived).format('DD/MM - HH:mm'));
+
+                    } else {
+                        //RAM DIAGRAM
+                        $('#ram-available').css("display", "block");
+                        $('#ram-unavailable').css("display", "none");
+                        $('#ram-unavailable-text')
+                            .html('Used: ' +
+                                ConvertToGbFormat(GetUsedRAM(data.ServerModel.RAMTotal,
+                                    data.ServerModel.RAMAvailable)) +
+                                ' (' +
+                                PercentUnavailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable) +
+                                '%)');
+                        $('#ram-available-text')
+                            .html('Free: ' +
+                                ConvertToGbFormat(data.ServerModel.RAMAvailable) +
+                                ' (' +
+                                PercentAvailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable) +
+                                '%)');
+
+                        //TEmperature
+                        $('#temperature-available').css("display", "block");
+                        $('#temperature-unavailable').css("display", "none");
+
+
+                        //LED RED
+                        $('.led-red').addClass("led-green").removeClass("led-red");
+
+                        $('#UpDownTime').html("Up time");
+                        $('#currentProcesses').show();
+                        $('#dataReceivedDate').show();
+                        $('#currentThreads').show();
+                        $('#currentThreads').html(data.ServerModel.Threads);
+                        $('#currentHandles').show();
+                        $('#currentHandles').html(data.ServerModel.Handles);
+                        $('#upTime').html(data.ServerModel.UpTime);
+                        $('#currentProcesses').html(data.ServerModel.Processes);
+                        $('#dataReceivedDate').html(moment(data.ServerModel.DataReceived).format('DD/MM - HH:mm'));
+                    }
+
+
+                    //Update the graph with CPU DATA
+                    $.each(data.GraphDatasCpu,
+                        function(index, value) {
+                            value.x = formatJSONDate(value.x);
+
+                        });
+                    $.each(data.GraphDatasNetwork,
+                        function(index, value) {
+                            value.x = formatJSONDate(value.x);
+
+                        });
+
+
+                    configCpu.data.datasets[0].data = data.GraphDatasCpu;
+                    configCpu.data.datasets[1].data = data.GraphDatasTemperature;
+
+                    configNetwork.data.datasets[0].data = data.GraphDatasNetwork;
+
+
+                    gauge.set(data.ServerModel.CurrentTemperature);
+                    gaugecpu.set(data.ServerModel.CpuGaugeValue);
+
+                    //RAM
+                    configRam.data.datasets[0].data =
+                    {
+                        "0": PercentUnavailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable),
+                        "1": PercentAvailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable)
+                    }
+
+
+                    //actual update
+                    window.ramPie.update();
+                    window.NetworkChart.update();
+                    window.CpuChart.update();
+
+
+                },
+                error: function(error) {
+                    console.log('Error: ' + JSON.stringify(error));
                 }
+            });
+        }
+
+        setInterval(UpdateServerData, 6000);
+
+        function formatJSONDate(jsonDate) {
+
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = doubledigitdate(currentTime.getMonth() + 1);
+            var day = doubledigitdate(currentTime.getDate());
+            var year = currentTime.getFullYear();
+            var hours = doubledigitdate(currentTime.getHours());
+            var min = doubledigitdate(currentTime.getMinutes());
+            var sec = doubledigitdate(currentTime.getSeconds());
+            var date = year + "-" + month + "-" + day + "T" + hours + ":" + min + ":" + sec;
 
 
-                //Update the graph with CPU DATA
-                $.each(data.GraphDatasCpu, function( index, value ) {
-                    value.x = formatJSONDate(value.x);
+            return date;
+        }
 
-                });
-                $.each(data.GraphDatasNetwork, function( index, value ) {
-                    value.x = formatJSONDate(value.x);
-
-                });
-
-
-                configCpu.data.datasets[0].data = data.GraphDatasCpu;
-                configCpu.data.datasets[1].data = data.GraphDatasTemperature;
-
-                configNetwork.data.datasets[0].data = data.GraphDatasNetwork;
-
-
-                gauge.set(data.ServerModel.CurrentTemperature);
-                gaugecpu.set(data.ServerModel.CpuGaugeValue);
-
-                //RAM
-                configRam.data.datasets[0].data =
-                { "0": PercentUnavailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable),
-                    "1":PercentAvailable(data.ServerModel.RAMTotal, data.ServerModel.RAMAvailable)}
-
-
-
-
-                //actual update
-                window.ramPie.update();
-                window.NetworkChart.update();
-                window.CpuChart.update();
-
-
-            },
-            error: function (error) {
-                console.log('Error: ' + JSON.stringify(error));
+        function doubledigitdate(num) {
+            if (num < 10) {
+                return "0" + num;
+            } else {
+                return num;
             }
-        });
-    }
-    setInterval(UpdateServerData, 6000);
-    function formatJSONDate(jsonDate) {
-
-        var dateString = jsonDate.substr(6);
-        var currentTime = new Date(parseInt(dateString ));
-        var month =doubledigitdate( currentTime.getMonth() + 1);
-        var day = doubledigitdate(currentTime.getDate());
-        var year = currentTime.getFullYear();
-        var hours =doubledigitdate( currentTime.getHours());
-        var min = doubledigitdate(currentTime.getMinutes());
-        var sec =doubledigitdate( currentTime.getSeconds());
-        var date = year + "-" + month + "-" + day+"T"+ hours +":"+min+":"+sec;
-
-
-        return date;
-    }
-    function doubledigitdate(num) {
-        if (num < 10) {
-            return "0" + num;
-        } else {
-            return num;
         }
-    }
 
-    //RAM
-    //Pie chart
-    var configRam = {
+        //RAM
+        //Pie chart
+        var configRam = {
+            type: 'pie',
+            data: {
+                datasets: [
+                {
+                    data: [
+                        PercentAvailable(@Model.ServerModel.RAMTotal, @Model.ServerModel.RAMAvailable),
+                        PercentUnavailable(@Model.ServerModel.RAMTotal, @Model.ServerModel.RAMAvailable)
+                        ],
+                        backgroundColor: [
+                            window.chartColors.red,
+                            window.chartColors.green
+                        ],
+                        label: 'Dataset 1'
+                    }
+                ],
+                labels: [
+                    "Used",
+                    "Free"
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        };
 
-        type: 'pie',
-        data: {
-            datasets: [{
-                data: [
-                    PercentAvailable(@Model.ServerModel.RAMTotal, @Model.ServerModel.RAMAvailable),
-                    PercentUnavailable(@Model.ServerModel.RAMTotal, @Model.ServerModel.RAMAvailable)
-                ],
-                backgroundColor: [
-                    window.chartColors.red,
-                    window.chartColors.green
-                ],
-                label: 'Dataset 1'
-            }],
-            labels: [
-                "Used",
-                "Free"
-            ]
-        },
-        options: {
-            responsive: true
+        function PercentAvailable(total, available) {
+            return Math.round(available / total * 100);
+        };
+
+        function PercentUnavailable(total, available) {
+            return Math.round(100 - available / total * 100);
+        };
+
+        var ctxRam = document.getElementById("canvas-ram").getContext("2d");
+        window.ramPie = new Chart(ctxRam, configRam);
+
+        function GetUsedRAM(total, available) {
+            return total - available;
+        };
+
+        function ConvertToGbFormat(mb) {
+            return formatBytes(mb * 1000 * 1000);
         }
-    };
-    function PercentAvailable(total, available) {
-        return Math.round(available/total*100);
-    };
-    function PercentUnavailable(total, available) {
-        return Math.round(100-available/total*100);
-    };
-    var ctxRam = document.getElementById("canvas-ram").getContext("2d");
-    window.ramPie = new Chart(ctxRam, configRam);
-    function GetUsedRAM(total, available)
-    {
-        return total-available;
-    };
-    function ConvertToGbFormat(mb)
-    {
-        return formatBytes(mb*1000*1000);
-    }
-    function formatBytes(bytes) {
-        if(bytes < 1024) return bytes + " Bytes";
-        else if(bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
-        else if(bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
-        else return(bytes / 1073741824).toFixed(2) + " GB";
-    };
 
-</script>
+        function formatBytes(bytes) {
+            if (bytes < 1024) return bytes + " Bytes";
+            else if (bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
+            else if (bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
+            else return(bytes / 1073741824).toFixed(2) + " GB";
+        };
+
+    </script>
+}

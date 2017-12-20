@@ -16,6 +16,8 @@ namespace ServerMonitorFrontend.Controllers
             new BLLFacade().GetEmailRecipientGateway();
         private readonly IServiceGateway<EventType> eventTypeGateway =
             new BLLFacade().GetEventTypeGateway();
+
+        [Authorize]
         [HttpGet]
         public ActionResult GetSettingsDialog()
         {
@@ -28,6 +30,7 @@ namespace ServerMonitorFrontend.Controllers
             return PartialView("~/Views/Dialog/_SettingsDialog.cshtml", settingsModel);
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult UpdateSetting(SettingsModel model)
         {

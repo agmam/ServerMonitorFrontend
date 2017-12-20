@@ -63,22 +63,23 @@
 @RenderSection("scripts", required: false)
 </body>
 </html>
+@section Scripts{
+    <script>
 
-<script>
-    
-    function openSettingsDialog() {
-        $.ajax({
-            url: "/Settings/GetSettingsDialog",
-            type: 'GET',
-            contentType: 'application/json; charset=UTF-8',
-            success: function (dialog) {
-                $('.modal-content').html(dialog);
-                $('#myModal').fadeToggle(200);
-            },
-            error: {
+        function openSettingsDialog() {
+            $.ajax({
+                url: "/Settings/GetSettingsDialog",
+                type: 'GET',
+                contentType: 'application/json; charset=UTF-8',
+                success: function(dialog) {
+                    $('.modal-content').html(dialog);
+                    $('#myModal').fadeToggle(200);
+                },
+                error: {
                 
-            }
+                }
 
-        });
-    }
-</script>
+            });
+        }
+    </script>
+}

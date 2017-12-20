@@ -11,6 +11,8 @@ namespace ServerMonitorFrontend.Controllers
     {
         private readonly IServerGateway serverGateway =
            new BLLFacade().GetServerGateway();
+
+        [Authorize]
         // GET: Server
         public ActionResult Index()
         {
@@ -18,6 +20,7 @@ namespace ServerMonitorFrontend.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult DeleteServer(int id)
         {
             var s = serverGateway.Read(id);
