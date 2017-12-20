@@ -64,6 +64,7 @@ namespace ServerMonitorFrontend.Gateways
                 {
                     return JsonConvert.DeserializeObject<T>(json);
                 }
+                return default(T);
             }
             catch (Exception e)
             {

@@ -27,7 +27,13 @@ namespace ServerMonitorFrontend.Controllers
         [Authorize]
         public ActionResult Index(int id = 1)
         {
-            var model = GenerateViewModel(id);
+            var server = serverGateway.ReadAll().FirstOrDefault();
+            HomeIndexViewModel model = new HomeIndexViewModel();
+            if (server != null)
+            {
+                 model = GenerateViewModel(server.Id);
+            }
+            
             return View(model);
         }
 
