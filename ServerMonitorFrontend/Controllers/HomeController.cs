@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.Pipes;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using Entities.Entities;
@@ -26,15 +27,30 @@ namespace ServerMonitorFrontend.Controllers
             new BLLFacade().GetEventGateway();
         [Authorize]
         public ActionResult Index(int id = 1)
-        {
+        {HomeIndexViewModel model = new HomeIndexViewModel();
+            try { 
             var server = serverGateway.ReadAll().FirstOrDefault();
-            HomeIndexViewModel model = new HomeIndexViewModel();
+            
             if (server != null)
             {
                  model = GenerateViewModel(server.Id);
             }
             
             return View(model);
+            }
+            catch (Exception e)
+            {
+                model.ServerModel = new ServerModel();
+                model.Events = new List<Event>();
+                model.ServerList = new List<Server>();
+                model.ServerModel.Server = new Server();
+                model.GraphDatasCpu = new List<GraphData>();
+                model.GraphDatasNetwork = new List<GraphData>();
+                model.GraphDatasTemperature = new List<GraphData>();
+
+
+                return View(model);
+            }
         }
 
         [Authorize]
@@ -85,6 +101,45 @@ namespace ServerMonitorFrontend.Controllers
         }
         
 
+        public string SendMailTest()
+        {
+            string m = "Hej";
+            List<string> receivers = new List<string>() {
+                "Esben.laursen@gmail.com","ag-mam@live.dk"
+               
+            };
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var result = client.PostAsJsonAsync("http://localhost:63735/api/Home", receivers).Result;
+                    //try
+                    //{
+                    //    string json = await result.Content.ReadAsStringAsync();
+                    //    if (result.IsSuccessStatusCode)
+                    //    {
+                    //        return JsonConvert.DeserializeObject<T>(json);
+                    //    }
+                    //    return default(T);
+                    //}
+                    //catch (Exception e)
+                    //{
+
+                    //    return default(T);
+                    //}
+                }
+                return "sent fag";
+            }
+            catch (Exception)
+            {
+
+                return "nope";
+            }
+
+         
+            
+        }
+       
 
 
     }

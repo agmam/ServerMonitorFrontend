@@ -1,9 +1,11 @@
-﻿@model ServerMonitorFrontend.Models.HomeIndexViewModel
+﻿@using Entities.Entities
+@model ServerMonitorFrontend.Models.HomeIndexViewModel
+
 <div class="panel panel-primary" style="margin-right: 1px;" id="Serverdetailpanel">
     <div class="panel-heading">
-       @Html.DropDownList("server-dropdown",
-                     new SelectList(Model.ServerList, "Id", "ServerName", 0),
-                     new { @class = "myDropdownServers pull-right" })
+        @Html.DropDownList("server-dropdown",
+                                new SelectList(Model.ServerList ?? new List<Server>(), "Id", "ServerName", 0),
+                                new { @class = "myDropdownServers pull-right" })
         <h3 class="panel-title">
             Server details
         </h3>
@@ -11,42 +13,45 @@
     <div class="panel-body fixed-panel">
         <table class="table table-striped">
             <tbody>
-            <tr>
-                <th>Server status</th>
-                <th>
-                    <div class="led-box">
-                        <div class="led-green" id="led-lamp"></div>
-                    </div>
-                </th>
-            </tr>
-           
-            <tr>
-                <th>Data received</th>
-                <th id="dataReceivedDate" title="Data received">@Model.ServerModel.DataReceived</th>
-            </tr>
-        
-             
-            <tr>
-                <th id="UpDownTime">Up time</th>
-                <th>
-                    <div id="uptimeDiv">
-                        <p id="upTime">@Model.ServerModel.UpTime</p>
-                    </div>
-                </th>
-            </tr>
-            <tr>
-                <th>Threads</th>
-                <th id="currentThreads" title="Current threads">@Model.ServerModel.Threads</th>
-            </tr>
-            <tr>
-                <th>Processes</th>
-                <th id="currentProcesses" title="Processer">@Model.ServerModel.Processes</th>
-            </tr>
+                <tr>
+                    <th>Server status</th>
+                    <th>
+                        <div class="led-box">
+                            <div class="led-green" id="led-lamp"></div>
+                        </div>
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>Data received</th>
+                    
+                    <th id="dataReceivedDate" title="Data received">@Model.ServerModel.DataReceived</th>
+                   
+                    
+                </tr>
+
+
+                <tr>
+                    <th id="UpDownTime">Up time</th>
+                    <th>
+                        <div id="uptimeDiv">
+                            <p id="upTime">@Model.ServerModel.UpTime</p>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Threads</th>
+                    <th id="currentThreads" title="Current threads">@Model.ServerModel.Threads</th>
+                </tr>
+                <tr>
+                    <th>Processes</th>
+                    <th id="currentProcesses" title="Processer">@Model.ServerModel.Processes</th>
+                </tr>
                 <tr>
                     <th>Handles</th>
                     <th id="currentHandles" title="Processer">@Model.ServerModel.Handles</th>
                 </tr>
-          
+
             </tbody>
         </table>
     </div>

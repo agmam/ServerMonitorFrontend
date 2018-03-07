@@ -3,15 +3,12 @@
 @{
     ViewBag.Title = "Frontpage";
 }
-
 <div class="row">
-
     <div class="col-md-6 padding-md" style="margin: 10px;">
         <div class="panel" style="border: 1px solid gray;">
             <div class="row">
                 <div class="col-md-6 padding-md">
                     @Html.Partial("~/Views/Home/_TemperatureDetail.cshtml")
-
                 </div>
                 <div class="col-md-6 padding-md">
                     @Html.Partial("~/Views/Home/_ServerDetail.cshtml")
@@ -28,27 +25,21 @@
         </div>
     </div>
 
-
     <div class="col-md-5">
         <div class="row">
             <div class="outer-canvas-container" style="margin-top:15px;">
                 <canvas id="canvas-cpu-graph" class="box-shadow padding-canvas"></canvas>
             </div>
-
         </div>
         <div class="row">
             <div class="outer-canvas-container" style="margin-top:15px;">
                 <canvas id="canvas-network-graph" class="box-shadow padding-canvas"></canvas>
             </div>
-
         </div>
     </div>
-
 </div>
 
-
 @section Scripts{
-
     <script>
         //Get the server from the dropdown, so we know what to display for
         var serverToDisplay = $('#server-dropdown').val();
@@ -337,15 +328,24 @@
         gaugecpu.maxValue = 100; // set max gauge value
         gaugecpu.setMinValue(0); // Prefer setter over gauge.minValue = 0
         gaugecpu.animationSpeed = 44; // set animation speed (32 is default value)
-        gaugecpu.set(@Html.JsonInsert(Model.GraphDatasCpu.FindLast(x => x.y != -1).y)); // set actual value
+        var val = 0;
+        var last = @Model.GraphDatasCpu.LastOrDefault();
+        if (last != null) {
+            val = last.y;
+        }
+        gaugecpu.set(val); // set actual value
 
 
         function h() {
             gauge.set(@Html.JsonInsert(Model.ServerModel.CurrentTemperature));
-            gaugecpu.set(@Html.JsonInsert(Model.GraphDatasCpu.FindLast(x => x.y != -1).y));
-        }
+            var val = 0;
+            var last = @Model.GraphDatasCpu.LastOrDefault();
+            if (last != null) {
+                val = last.y;
+            }
+            gaugecpu.set(val);
 
-        h();
+        }        h();
         UpdateServerData();
         $("#server-dropdown")
             .change(function() {

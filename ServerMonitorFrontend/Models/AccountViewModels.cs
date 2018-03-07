@@ -60,6 +60,7 @@ namespace ServerMonitorFrontend.Models
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+        public string ErrorMessage { get; internal set; }
     }
 
     public class RegisterViewModel

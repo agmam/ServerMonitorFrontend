@@ -63,6 +63,7 @@ namespace ServerMonitorFrontend.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -83,6 +84,12 @@ namespace ServerMonitorFrontend.Controllers
             {
                 
                 var result = await WebApiService.instance.AuthedicateAsync<SignInResult>(model.Email, model.Password);
+                if(result == null)
+                {
+                    LoginViewModel emptyModel = new LoginViewModel();
+                    emptyModel.ErrorMessage = "No connection to API";
+                    return View(emptyModel);
+                }
                 FormsAuthentication.SetAuthCookie(result.AccessToken, model.RememberMe);
                 var claims = new[]
                 {

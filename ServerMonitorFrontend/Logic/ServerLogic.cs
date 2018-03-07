@@ -17,41 +17,47 @@ namespace ServerMonitorFrontend.Models
         public ServerModel getServerModel(int serverId)
         {
             ServerModel serverModel = new ServerModel();
-
-            Server server = serverGateway.Read(serverId);
-            serverModel.Server = server;
-
-            var serverDetails = serverDetailsDB.ReadAllFromServer(server.Id);
-            if (serverDetails.LastOrDefault(x => x.Created > DateTime.Now.AddSeconds(-30)) != null)
+            try
             {
-                //Server up
-                serverModel.ServerUp = true;
-                var latestServerDetail = serverDetails.LastOrDefault() ?? new ServerDetail();
-                serverModel.CurrentTemperature = latestServerDetail.Temperature;
-                serverModel.RAMTotal = latestServerDetail.RAMTotal;
-                serverModel.BytesReceived = latestServerDetail.BytesReceived;
-                serverModel.BytesSent = latestServerDetail.BytesSent;
-                serverModel.Handles = latestServerDetail.Handles;
-                serverModel.Processes = latestServerDetail.Processes;
-                serverModel.Threads = latestServerDetail.Threads;
-                serverModel.RAMAvailable = latestServerDetail.RAMAvailable;
-                serverModel.DataReceived = latestServerDetail.Created;
-                serverModel.UpTime = CalculateUpTime(latestServerDetail.UpTime);
-                serverModel.CpuGaugeValue = latestServerDetail.CPUUtilization;
-            }
-            else
+                Server server = serverGateway.Read(serverId);
+                serverModel.Server = server;
+
+
+
+                var serverDetails = serverDetailsDB.ReadAllFromServer(server.Id);
+                if (serverDetails.LastOrDefault(x => x.Created > DateTime.Now.AddSeconds(-30)) != null)
+                {
+                    //Server up
+                    serverModel.ServerUp = true;
+                    var latestServerDetail = serverDetails.LastOrDefault() ?? new ServerDetail();
+                    serverModel.CurrentTemperature = latestServerDetail.Temperature;
+                    serverModel.RAMTotal = latestServerDetail.RAMTotal;
+                    serverModel.BytesReceived = latestServerDetail.BytesReceived;
+                    serverModel.BytesSent = latestServerDetail.BytesSent;
+                    serverModel.Handles = latestServerDetail.Handles;
+                    serverModel.Processes = latestServerDetail.Processes;
+                    serverModel.Threads = latestServerDetail.Threads;
+                    serverModel.RAMAvailable = latestServerDetail.RAMAvailable;
+                    serverModel.DataReceived = latestServerDetail.Created;
+                    serverModel.UpTime = CalculateUpTime(latestServerDetail.UpTime);
+                    serverModel.CpuGaugeValue = latestServerDetail.CPUUtilization;
+                }
+                else
+                {
+                    //Server down
+                    // serverModel.DataReceived =DateTime.Now;
+                    //Get latest serverdetail 
+
+                    var latest = serverDetailsDB.ReadAllFromServer(serverId).OrderByDescending(x => x.Created)
+                        .FirstOrDefault();
+                    serverModel.DataReceived = latest?.Created ?? DateTime.Now;
+
+                    serverModel.ServerUp = false;
+                }
+            } catch (Exception e)
             {
-                //Server down
-                // serverModel.DataReceived =DateTime.Now;
-                //Get latest serverdetail 
-
-                var latest = serverDetailsDB.ReadAllFromServer(serverId).OrderByDescending(x => x.Created)
-                    .FirstOrDefault();
-                serverModel.DataReceived = latest?.Created ?? DateTime.Now;
-
-                serverModel.ServerUp = false;
+                return new ServerModel();
             }
-
 
 
             return serverModel;

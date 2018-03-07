@@ -29,6 +29,8 @@
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Report", "Index", "Report")</li>
                 <li>@Html.ActionLink("Servers", "Index", "Server")</li>
+                <li><button onclick="sendEmailTest()">Test mail</button></li>
+                <li><p id="isSendingMail" style="color:red">Ready</p></li>
             </ul>
 
             <ul class="nav navbar-nav">
@@ -63,9 +65,25 @@
 @RenderSection("scripts", required: false)
 </body>
 </html>
-@section Scripts{
-    <script>
 
+    <script>
+        function sendEmailTest() {
+
+            $('#isSendingMail').html('sending');
+            $.ajax({
+                url: "/Home/SendMailTest",
+                type: 'POST',
+                contentType: 'application/json; charset=UTF-8',
+                success: function (reply) {
+                    $('#isSendingMail').html(reply);
+
+                },
+                error: {
+
+                }
+
+            });
+        }
         function openSettingsDialog() {
             $.ajax({
                 url: "/Settings/GetSettingsDialog",
@@ -82,4 +100,4 @@
             });
         }
     </script>
-}
+

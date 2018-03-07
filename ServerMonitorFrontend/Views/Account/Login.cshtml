@@ -1,46 +1,48 @@
 ﻿@model ServerMonitorFrontend.Models.LoginViewModel
-
 @{
     Layout = "";
-    
-}
 
+}
 <html>
 <head>
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
     <script src="https://use.fontawesome.com/040f355ddf.js"></script>
-
 </head>
 <body>
-<h2>@ViewBag.Title</h2>
-<div class="container">
-    <div class="card card-container">
-           
-        <div style="display:inline-block;"><h1 style="text-align: center;">Login</h1>
-        </div>
-        @using (Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin", role = "form" }))
-        {
-                
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <span id="reauth-email" class="reauth-email"></span>
-               
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "inputEmail", autofocus = "", placeholder = "Email" })
-            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-               
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = "inputPassword", placeholder = "Password" })
-            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                
-            <input type="submit" value="Log in" class="btn btn-lg btn-primary btn-block btn-signin"/>
-                      
-        }
-    </div><!-- /card-container -->
-</div><!-- /container -->
+    <h2>@ViewBag.Title</h2>
+    <div class="container">
+        <div class="card card-container">
 
+            <div style="display:inline-block;">
+                <h1 style="text-align: center;">Login</h1>
+            </div>
+            @using (Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin", role = "form" }))
+            {
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <span id="reauth-email" class="reauth-email"></span>
+
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "inputEmail", autofocus = "", placeholder = "Email" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = "inputPassword", placeholder = "Password" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+                <input type="submit" value="Log in" class="btn btn-lg btn-primary btn-block btn-signin" />
+
+                if (Model?.ErrorMessage != null)
+                {
+                    <h4 style="color:red">@Model.ErrorMessage</h4>
+
+                }
+
+            }
+        </div><!-- /card-container -->
+    </div><!-- /container -->
 </body>
 </html>
